@@ -3,6 +3,7 @@ import React from 'react'
 import { Bell, Search, User } from "lucide-react";
 import { useQueryState } from 'nuqs'
 import { NotificationPopover } from './notificationPopover';
+import { AdminPopover } from './adminPopover';
 
 function Navrightside() {
 
@@ -24,12 +25,8 @@ function Navrightside() {
                     <NotificationPopover/>
                 </button>
 
-                <div className="flex items-center gap-2 cursor-pointer">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted hover:ring">
-                        <User className="h-4 w-4 " />
-                    </div>
-                    <span className="hidden sm:block text-sm font-medium hover:underline">Admin</span>
-                </div>
+                
+                    <AdminPopover/>
             </div>
         </div>
     )

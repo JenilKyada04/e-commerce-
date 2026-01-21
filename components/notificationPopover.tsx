@@ -18,7 +18,7 @@ export function NotificationPopover() {
                     <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
                 </div>
             </PopoverTrigger>
-            <PopoverContent className="w-70 mt-3 mr-3 bg-black text-white">
+            <PopoverContent className="w-70 mt-3 mr-3 bg-gray-200">
                 <div className="grid gap-4 md:p-4 p-1">
                     <div className="flex items-center justify-center border-b pb-2">
                         <span className="text-sm font-semibold text-muted-foreground">
