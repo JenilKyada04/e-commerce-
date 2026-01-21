@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Bell, Search, User } from "lucide-react";
 import { useQueryState } from 'nuqs'
+import { NotificationPopover } from './notificationPopover';
 
 function Navrightside() {
 
@@ -19,16 +20,15 @@ function Navrightside() {
                     />
                 </div>
 
-                <button className="relative">
-                    <Bell className="h-5 w-5 text-muted-foreground" />
-                    <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
+                <button >
+                    <NotificationPopover/>
                 </button>
 
                 <div className="flex items-center gap-2 cursor-pointer">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                        <User className="h-4 w-4" />
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted hover:ring">
+                        <User className="h-4 w-4 " />
                     </div>
-                    <span className="hidden sm:block text-sm font-medium">Admin</span>
+                    <span className="hidden sm:block text-sm font-medium hover:underline">Admin</span>
                 </div>
             </div>
         </div>

@@ -9,9 +9,6 @@ export default function HomePage() {
           SaaS Admin Dashboard
         </h1>
 
-        <p className="mt-4 max-w-xl text-muted-foreground">
-          A modern admin dashboard built with Next.js, Tailwind CSS, and Fake Store API.
-        </p>
 
         <div className="mt-8 flex gap-4">
           <Link
