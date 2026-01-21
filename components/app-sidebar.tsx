@@ -62,7 +62,7 @@ export function AppSidebar() {
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme SaaS</span>
+                  <span className="truncate font-semibold">JK SaaS</span>
                   <span className="truncate text-xs text-muted-foreground">
                     Enterprise Plan
                   </span>
@@ -151,7 +151,7 @@ export function AppSidebar() {
                   <User className="mr-2 size-4" />
                   Account
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer text-destructive">
+                <DropdownMenuItem className="cursor-pointer text-destructive"  onClick={()=> window.location.href = "https://www.google.com" }>
                   <LogOut className="mr-2 size-4" />
                   Logout
                 </DropdownMenuItem>

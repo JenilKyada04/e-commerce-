@@ -14,12 +14,12 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-2 shadow-sm transition focus-within:ring-2 focus-within:ring-primary">
-                <Search className="h-4 w-4 text-muted-foreground" />
+                {/* <Search className="h-4 w-4 text-muted-foreground" />
                 <input
                     type="text"
                     placeholder="Search..."
                     className="w-48 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                />
+                /> */}
             </div>
 
 
