@@ -16,20 +16,34 @@ type Product = {
     category: string
 }
 
+
+
 export default function Page() {
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
 
-    const apikey = process.env.NEXT_PUBLIC_API_URL
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     useEffect(() => {
-        axios.get("https://fakestoreapi.com/products")
+        if (!apiUrl) {
+            console.error("API URL is missing")
+            setLoading(false)
+            return
+        }
+
+        axios.get(apiUrl)
             .then((res) => {
                 setProducts(res.data)
-                setLoading(false)
             })
-            .catch(() => setLoading(false))
-    }, [])
+            .catch((err) => {
+                console.error(err)
+            })
+            .finally(() => setLoading(false))
+    }, [apiUrl])
+
+
+
 
     if (loading) return <p>Loading products...</p>
 

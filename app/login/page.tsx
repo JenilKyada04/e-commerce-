@@ -17,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (username && password) {
-      login("fake-token-123");
+      // login("jenil");
       router.push("/dashboard");
     } else {
       alert("Please enter username and password");
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="w-full rounded bg-primary px-4 py-2 text-white hover:opacity-90"
+          className="w-full cursor-pointer rounded bg-primary px-4 py-2 text-white hover:opacity-90"
         >
           Login
         </button>

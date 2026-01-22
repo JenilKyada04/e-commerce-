@@ -50,7 +50,7 @@ export function AdminPopover() {
             Settings
           </Button>
 
-          <Button variant="ghost" className="w-full justify-start gap-2">
+          <Button variant="ghost" className="w-full justify-start gap-2 ">
             <Bell className="h-4 w-4" />
             Notifications
           </Button>
@@ -61,10 +61,12 @@ export function AdminPopover() {
         <div className="p-2">
           <Button
             variant="destructive"
-            className="w-full justify-start gap-2"
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
+            className="w-full justify-start gap-2">
+
+            <LogOut className="h-4 w-4 " />
+            <div onClick={() => window.location.href = "https://www.google.com"} className="cursor-pointer">
+              Logout
+            </div>
           </Button>
         </div>
       </PopoverContent>

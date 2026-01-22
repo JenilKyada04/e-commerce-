@@ -6,7 +6,6 @@ import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import AddToCart from "@/components/addtocart"
 import { useCart } from "@/context/cart-context"
-import { Heart } from "lucide-react"
 
 type Product = {
   id: number
@@ -31,15 +30,17 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
 
+
+  // const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT
+
   useEffect(() => {
     if (!productId) return
 
     const controller = new AbortController()
 
-    axios
-      .get(`https://fakestoreapi.com/products/${productId}`, {
-        signal: controller.signal,
-      })
+    axios.get(`https://fakestoreapi.com/products/${productId}`, {
+      signal: controller.signal,
+    })
       .then((res) => {
         setProduct(res.data)
         setLoading(false)
@@ -54,26 +55,24 @@ export default function ProductPage() {
 
   return (
     <>
-    <span className="font-semibold text-3xl p-6">Product Details  </span>
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <span className="font-semibold text-3xl p-6">Product Details  </span>
+      <div className="min-h-screen bg-gray-50 py-12  md:px-4">
         <div className="max-w-6xl mx-auto ">
           <div className="bg-white rounded-3xl p-4 shadow-xl overflow-hidden border border-gray-100 grid md:grid-cols-2">
 
-            {/* Image */}
             <div className="relative rounded-2xl  bg-[#f8f9fa] flex items-center justify-center p-12 group">
-              <span className="absolute top-6 left-6 px-3 py-1 bg-white/80 border rounded-full text-xs font-semibold text-gray-600">
+              <span className="absolute top-3 left-6 px-3 py-1 bg-white/80 border rounded-full text-[10px] md:text-xs font-semibold text-gray-600">
                 {product.category}
               </span>
 
               <img
                 src={product.image}
                 alt={product.title}
-                className="h-80 object-contain transition-transform duration-500 group-hover:scale-110"
+                className="md:h-80 h-50 object-contain transition-transform duration-500 group-hover:scale-110"
               />
             </div>
 
-            {/* Content */}
-            <div className="p-10 flex flex-col justify-center">
+            <div className=" p-3 md:p-10 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-3">
                 <span className="bg-yellow-100 px-2 py-1 rounded text-sm font-semibold text-yellow-700">
                   ★ {product.rating.rate}
@@ -83,14 +82,14 @@ export default function ProductPage() {
                 </span>
               </div>
 
-              <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
+              <h1 className="md:text-3xl text-xl font-bold mb-4">{product.title}</h1>
 
-              <p className="text-gray-500 mb-8 border-l-4 pl-4">
+              <p className="text-gray-500 mb-8 text-sm border-l-4 pl-4">
                 {product.description}
               </p>
 
-              <div className="flex items-center gap-4 mb-8">
-                <span className="text-4xl font-extrabold">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <span className="md:text-4xl font-extrabold">
                   ₹{product.price}
                 </span>
                 <span className="text-green-600 text-sm font-semibold bg-green-50 px-2 py-1 rounded">
@@ -108,11 +107,9 @@ export default function ProductPage() {
                 >
                   Add to Cart
                 </Button>
-
-                
               </div>
 
-              <p className="mt-6 text-center text-xs text-gray-400">
+              <p className="mt-6 text-center text-xs text-gray-500">
                 Secure Checkout • 30-Day Returns
               </p>
             </div>

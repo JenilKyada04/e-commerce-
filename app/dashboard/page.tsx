@@ -29,7 +29,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <button
           onClick={handleLogout}
-          className="rounded-full bg-black  px-4 py-2 text-white hover:opacity-90"
+          className="rounded-full bg-black cursor-pointer  px-4 py-2 text-white hover:opacity-90"
         >
           Logout
         </button>

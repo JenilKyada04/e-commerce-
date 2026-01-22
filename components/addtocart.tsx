@@ -32,8 +32,7 @@ type AddToCartProps = {
 }
 
 export default function AddToCart({
-  open,
-  setOpen,
+  open, setOpen,
   cart,
   increaseQty,
   decreaseQty,
@@ -75,24 +74,26 @@ export default function AddToCart({
                   ₹{item.price}
                 </p>
 
-                <div className="flex items-center gap-2 mt-2">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => decreaseQty(item.id)}
-                  >
-                    <Minus size={14} />
-                  </Button>
+                <div className="flex items-center justify-between gap-2 mt-2">
+                  <div>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => decreaseQty(item.id)}
+                    >
+                      <Minus size={14} />
+                    </Button>
 
-                  <span>{item.quantity}</span>
+                    <span>{item.quantity}</span>
 
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => increaseQty(item.id)}
-                  >
-                    <Plus size={14} />
-                  </Button>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => increaseQty(item.id)}
+                    >
+                      <Plus size={14} />
+                    </Button>
+                  </div>
 
                   <Button
                     size="icon"
