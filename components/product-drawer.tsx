@@ -9,9 +9,9 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Trash2, Save, X } from "lucide-react"
 
 type ProductDrawerProps = {
   open: boolean
@@ -46,75 +46,78 @@ export default function ProductDrawer({
   onCancel,
 }: ProductDrawerProps) {
   return (
-    <>
+    <Drawer open={open} onOpenChange={setOpen} direction="right">
+      <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background">
+        <DrawerHeader className="border-b px-6 py-5">
+          <DrawerTitle className="text-xl font-semibold">
+            Edit Product
+          </DrawerTitle>
+          <DrawerDescription className="text-sm text-muted-foreground">
+            Update product details or remove it permanently.
+          </DrawerDescription>
+        </DrawerHeader>
 
-
-      <Drawer open={open} onOpenChange={setOpen} direction="right">
-        <DrawerContent className="p-6 max-w-md ml-auto">
-          <DrawerHeader>
-            <DrawerTitle>Edit Product</DrawerTitle>
-            <DrawerDescription>
-              Update or delete this product.
-            </DrawerDescription>
-          </DrawerHeader>
-
-          <div className="space-y-4 mt-4">
-            <div className="flex items-center gap-3">
-              <label htmlFor="Name">Name:</label>
-              <Input
-                placeholder="Title"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
-            </div>
-
-            <div className="flex items-center gap-3">
-              <label htmlFor="Name">Price:</label>
-              <Input
-                placeholder="Price"
-                type="number"
-                value={price}
-                onChange={e => setPrice(e.target.value)}
-              />
-            </div>
-
-            <div className="flex items-center gap-3">
-              <label htmlFor="Name">Category:</label>
-              <Input
-                placeholder="Category"
-                value={category}
-                onChange={e => setCategory(e.target.value)}
-              />
-            </div>
+        <div className="flex-1 space-y-5 px-6 py-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Product Name</label>
+            <Input
+              placeholder="Enter product title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
 
-          <DrawerFooter className="mt-6 flex gap-3">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Price</label>
+            <Input
+              placeholder="Enter price"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Category</label>
+            <Input
+              placeholder="e.g. Electronics"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <DrawerFooter className="border-t px-6 py-4">
+          <div className="flex gap-3">
             <Button onClick={onUpdate} className="flex-1">
-              Update
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
             </Button>
 
             {editingId && (
               <Button
                 variant="destructive"
-                className="flex-1"
                 onClick={onDelete}
+                className="flex-1"
               >
+                <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </Button>
             )}
+          </div>
 
-            <DrawerClose asChild>
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={onCancel}
-              >
-                Cancel
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
+          <DrawerClose asChild>
+            <Button
+              variant="ghost"
+              onClick={onCancel}
+              className="mt-3 w-full"
+            >
+              <X className="mr-2 h-4 w-4" />
+              Cancel
+            </Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }

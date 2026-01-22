@@ -26,7 +26,7 @@ export default function LoginPage() {
         onSubmit={handleLogin}
         className="w-full max-w-sm rounded-lg bg-white p-8 shadow-md"
       >
-        <h2 className="mb-6 text-2xl font-bold">Login</h2>
+        <h2 className="mb-6 text-2xl font-bold">Admin Login</h2>
 
         <input
           type="text"

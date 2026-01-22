@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 
 export default function DashboardPage() {
@@ -7,11 +8,11 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-muted p-8">
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <button
+        <Link href="/login"
           className="rounded-full bg-black cursor-pointer  px-4 py-2 text-white hover:opacity-90"
         >
           Logout
-        </button>
+        </Link>
       </div>
 
       <p className="mt-4 text-gray-700">
