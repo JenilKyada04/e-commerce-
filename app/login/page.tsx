@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, isLoggedIn } from "@/utils/auth";
 import axios from "axios";
 
 export default function LoginPage() {
@@ -10,19 +9,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const credentials = { username: 'john_doe', password: 'pass123' };
-  axios.post('https://fakestoreapi.com/auth/login', credentials)
-    .then(response => console.log(response.data));
-
-  if (typeof window !== "undefined" && isLoggedIn()) {
-    router.push("/dashboard");
-  }
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (username && password) {
-      // login("jenil");
+    if (username === "jenil" && password === "123") {
       router.push("/dashboard");
     } else {
       alert("Please enter username and password");
@@ -42,6 +33,7 @@ export default function LoginPage() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          autoFocus
           className="mb-4 w-full rounded border px-3 py-2"
         />
         <input

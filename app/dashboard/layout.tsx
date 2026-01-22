@@ -10,8 +10,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-
-    <Suspense fallback={<div className="p-6 m-3">Loading dashboard...</div>}>
+    
+    <Suspense fallback={<div className="p-6 m-3 text-4xl">Loading dashboard...</div>}>
 
         <SidebarProvider>
           <div className="flex h-screen w-screen overflow-hidden">

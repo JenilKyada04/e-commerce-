@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { BsThreeDotsVertical } from "react-icons/bs"
 
@@ -90,12 +90,7 @@ export default function Page() {
     setUsers(prev =>
       prev.map(user =>
         user.id === editingId
-          ? {
-            ...user,
-            username,
-            email,
-            phone,
-          }
+          ? { ...user, username, email, phone, }
           : user
       )
     )
@@ -207,3 +202,4 @@ export default function Page() {
     </>
   )
 }
+

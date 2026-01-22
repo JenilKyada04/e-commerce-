@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -9,7 +8,6 @@ import {
   ShoppingCart,
   Users,
   BarChart3,
-  Settings,
   ChevronRight,
   Command,
   LogOut,
@@ -41,7 +39,6 @@ const navigationItems = [
   { title: "Orders", url: "/dashboard/orders", icon: ShoppingCart },
   { title: "Users", url: "/dashboard/users", icon: Users },
   { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
 export function AppSidebar() {

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { isLoggedIn } from "@/utils/auth";
 
 export default function HomePage() {
   return (
@@ -13,7 +12,7 @@ export default function HomePage() {
 
       <div className="mt-8 flex gap-4">
         <Link
-          href={isLoggedIn() ? "/dashboard" : "/login"}
+        href={"/login"}
           className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
         >
           Go to Dashboard
