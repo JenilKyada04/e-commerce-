@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import ProductDrawer from "@/components/product-drawer"
+import { BsThreeDotsVertical } from "react-icons/bs";
 import axios from "axios"
 
 import {
@@ -15,16 +17,6 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-} from "@/components/ui/drawer"
 
 type Product = {
     id: number
@@ -50,7 +42,6 @@ export default function Page() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL!
 
-    // Fetch products
     const fetchProducts = async () => {
         try {
             setLoading(true)
@@ -67,7 +58,6 @@ export default function Page() {
         fetchProducts()
     }, [])
 
-    // Add product
     const addProduct = async () => {
         if (!title || !price || !category) return
 
@@ -87,7 +77,6 @@ export default function Page() {
         }
     }
 
-    // Update product
     const updateProduct = async () => {
         if (!editingId) return
 
@@ -105,7 +94,6 @@ export default function Page() {
         }
     }
 
-    // Delete product
     const deleteProduct = async (id: number) => {
         try {
             await axios.delete(`${apiUrl}/${id}`)
@@ -115,7 +103,6 @@ export default function Page() {
         }
     }
 
-    // Edit product → open drawer
     const editProduct = (product: Product) => {
         setEditingId(product.id)
         setTitle(product.title)
@@ -124,7 +111,6 @@ export default function Page() {
         setDrawerOpen(true)
     }
 
-    // Reset form
     const resetForm = () => {
         setTitle("")
         setPrice("")
@@ -138,7 +124,6 @@ export default function Page() {
     return (
         <div className="p-6 space-y-6">
 
-            {/* Add Product Section */}
             <div className="flex gap-4">
                 <Input
                     placeholder="Title"
@@ -160,8 +145,7 @@ export default function Page() {
                 <Button onClick={addProduct}>Add</Button>
             </div>
 
-            {/* Table */}
-            <Table>
+            <Table className="">
                 <TableCaption>Product List</TableCaption>
 
                 <TableHeader>
@@ -171,7 +155,7 @@ export default function Page() {
                         <TableHead>Category</TableHead>
                         <TableHead>Stock</TableHead>
                         <TableHead className="text-right">Price</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead className="text-right">(Edit/Delete)</TableHead>
                     </TableRow>
                 </TableHeader>
 
@@ -185,79 +169,37 @@ export default function Page() {
                             <TableCell className="text-right">${item.price}</TableCell>
 
                             <TableCell className="text-right space-x-2">
-                                <Button size="sm" onClick={() => editProduct(item)}>
-                                    Edit
-                                </Button>
+                              
+                                <button>
 
-                                <Button
-                                    size="sm"
-                                    variant="destructive"
-                                    onClick={() => deleteProduct(item.id)}
-                                >
-                                    Delete
-                                </Button>
+                                    <BsThreeDotsVertical onClick={() => editProduct(item)} className="cursor-pointer" />
+                                </button>
+
+
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
 
-            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} direction="right">
-                <DrawerContent className="p-6 max-w-md ml-auto">
-                    <DrawerHeader>
-                        <DrawerTitle>Edit Product</DrawerTitle>
-                        <DrawerDescription>
-                            Update or delete this product.
-                        </DrawerDescription>
-                    </DrawerHeader>
+            <ProductDrawer
+                open={drawerOpen}
+                setOpen={setDrawerOpen}
+                title={title}
+                price={price}
+                category={category}
+                setTitle={setTitle}
+                setPrice={setPrice}
+                setCategory={setCategory}
+                editingId={editingId}
+                onUpdate={updateProduct}
+                onDelete={() => {
+                    if (editingId) deleteProduct(editingId)
+                    resetForm()
+                }}
+                onCancel={resetForm}
+            />
 
-                    <div className="space-y-4 mt-4">
-                        <Input
-                            placeholder="Title"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
-
-                        <Input
-                            placeholder="Price"
-                            type="number"
-                            value={price}
-                            onChange={e => setPrice(e.target.value)}
-                        />
-
-                        <Input
-                            placeholder="Category"
-                            value={category}
-                            onChange={e => setCategory(e.target.value)}
-                        />
-                    </div>
-
-                    <DrawerFooter className="mt-6 flex gap-3">
-                        <Button onClick={updateProduct} className="flex-1">
-                            Update
-                        </Button>
-
-                        {editingId && (
-                            <Button
-                                variant="destructive"
-                                className="flex-1"
-                                onClick={() => {
-                                    deleteProduct(editingId)
-                                    resetForm()
-                                }}
-                            >
-                                Delete
-                            </Button>
-                        )}
-
-                        <DrawerClose asChild>
-                            <Button variant="outline" className="flex-1" onClick={resetForm}>
-                                Cancel
-                            </Button>
-                        </DrawerClose>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
 
         </div>
     )

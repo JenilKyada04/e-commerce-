@@ -3,11 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, isLoggedIn } from "@/utils/auth";
+import axios from "axios";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const credentials = { username: 'john_doe', password: 'pass123' };
+  axios.post('https://fakestoreapi.com/auth/login', credentials)
+    .then(response => console.log(response.data));
 
   if (typeof window !== "undefined" && isLoggedIn()) {
     router.push("/dashboard");

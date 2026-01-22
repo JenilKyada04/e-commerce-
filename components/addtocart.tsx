@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import Link from "next/link"
 import {
   Drawer,
   DrawerContent,
@@ -114,9 +115,11 @@ export default function AddToCart({
             <span>₹{total.toFixed(2)}</span>
           </div>
 
+          <Link href={"/dashboard/orders"} >
           <Button disabled={cart.length === 0} className="w-full">
             Proceed to Checkout
           </Button>
+          </Link>
 
           <Button
             variant="outline"

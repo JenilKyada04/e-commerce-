@@ -19,11 +19,11 @@ export default function HomePage() {
           Go to Dashboard
           <ArrowRight className="h-4 w-4" />
         </Link>
+       
 
-        <Link
+        <Link  className="rounded-lg border px-6 py-3 text-sm font-medium hover:bg-muted"
           href="/login"
-          className="rounded-lg border px-6 py-3 text-sm font-medium hover:bg-muted"
-        >
+         > 
           Login
         </Link>
       </div>
