@@ -1,6 +1,5 @@
 "use client"
 
-import React from "react"
 import Link from "next/link"
 import {
   Drawer,
@@ -11,34 +10,16 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Minus, Plus, Trash } from "lucide-react"
+import { useCart } from "../context/cart-context"
 
-type Product = {
-  id: number
-  title: string
-  price: number
-  image: string
-}
-
-type CartItem = Product & {
-  quantity: number
-}
-
-type AddToCartProps = {
+type Props = {
   open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  cart: CartItem[]
-  increaseQty: (id: number) => void
-  decreaseQty: (id: number) => void
-  removeItem: (id: number) => void
+  setOpen: (open: boolean) => void
 }
 
-export default function AddToCart({
-  open, setOpen,
-  cart,
-  increaseQty,
-  decreaseQty,
-  removeItem,
-}: AddToCartProps) {
+export default function AddToCart({ open, setOpen }: Props) {
+  const { cart, increaseQty, decreaseQty, removeItem } = useCart()
+
   const total = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -46,37 +27,39 @@ export default function AddToCart({
 
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="right-0 top-0 h-full w-100 rounded-none">
+      <DrawerContent className="right-0 top-0 h-full w-[380px] rounded-none">
         <DrawerHeader>
           <DrawerTitle>Your Cart</DrawerTitle>
         </DrawerHeader>
 
         {cart.length === 0 && (
-          <p className="text-center text-gray-500 mt-10">
+          <p className="text-center mt-10 text-gray-500">
             Your cart is empty
           </p>
         )}
 
         <div className="flex-1 overflow-auto">
-          {cart.map((item) => (
+          {cart.map(item => (
             <div
               key={item.id}
               className="p-4 flex gap-4 border-b items-center"
             >
               <img
                 src={item.image}
-                className="h-16 w-16 object-contain border rounded-lg"
                 alt={item.title}
+                className="h-16 w-16 object-contain border rounded"
               />
 
               <div className="flex-1">
-                <p className="font-medium line-clamp-2">{item.title}</p>
+                <p className="font-medium line-clamp-2">
+                  {item.title}
+                </p>
                 <p className="text-green-600 font-semibold">
                   ₹{item.price}
                 </p>
 
-                <div className="flex items-center justify-between gap-2 mt-2">
-                  <div>
+                <div className="flex justify-between mt-2">
+                  <div className="flex items-center gap-2">
                     <Button
                       size="icon"
                       variant="outline"
@@ -115,10 +98,10 @@ export default function AddToCart({
             <span>₹{total.toFixed(2)}</span>
           </div>
 
-          <Link href={"/dashboard/orders"} >
-          <Button disabled={cart.length === 0} className="w-full">
-            Proceed to Checkout
-          </Button>
+          <Link href="/dashboard/checkout">
+            <Button className="w-full" disabled={!cart.length}>
+              Proceed to Checkout
+            </Button>
           </Link>
 
           <Button

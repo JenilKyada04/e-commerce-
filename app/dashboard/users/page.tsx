@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import UserDrawer from "@/components/user-drawer"
 
-
 type User = {
   id: number
   name: {
@@ -29,7 +28,6 @@ type User = {
   email: string
   phone: string
 }
-
 
 export default function Page() {
   const [users, setUsers] = useState<User[]>([])
@@ -47,7 +45,6 @@ export default function Page() {
     throw new Error("NEXT_PUBLIC_API_URL_CART is missing")
   }
 
-
   const fetchUsers = async () => {
     try {
       setLoading(true)
@@ -63,7 +60,6 @@ export default function Page() {
   useEffect(() => {
     fetchUsers()
   }, [apiUrl])
-
 
   const addUser = () => {
     if (!username || !email || !phone) return
@@ -83,7 +79,6 @@ export default function Page() {
     resetForm()
   }
 
-
   const updateUser = () => {
     if (!editingId) return
 
@@ -98,11 +93,9 @@ export default function Page() {
     resetForm()
   }
 
-
   const deleteUser = (id: number) => {
     setUsers(prev => prev.filter(user => user.id !== id))
   }
-
 
   const editUser = (user: User) => {
     setEditingId(user.id)
@@ -111,7 +104,6 @@ export default function Page() {
     setphone(user.phone)
     setDrawerOpen(true)
   }
-
 
   const resetForm = () => {
     setusername("")
@@ -123,13 +115,12 @@ export default function Page() {
 
   if (loading) return <p className="p-6">Loading...</p>
 
-
   return (
     <>
-      <span className="font-semibold text-2xl pl-6">User Details :-</span>
 
-      <div className="p-6 space-y-6">
-        <div className="flex gap-4">
+      <div className="p-4 space-y-6">
+      <span className="font-semibold text-2xl">User Details :-</span>
+        <div className="flex gap-4 mt-5">
           <Input
             placeholder="Username"
             value={username}
@@ -144,7 +135,7 @@ export default function Page() {
             placeholder="Email"
             value={email}
             onChange={e => setemail(e.target.value)}
-          />
+          />  
           <Button onClick={addUser}>Add</Button>
         </div>
 
@@ -172,8 +163,8 @@ export default function Page() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phone}</TableCell>
                 <TableCell className="text-right space-x-2">
-                  <button>
-                    <BsThreeDotsVertical onClick={() => editUser(user)} className="cursor-pointer" />
+                  <button onClick={() => editUser(user)} className="cursor-pointer px-4"  >
+                    <BsThreeDotsVertical />
                   </button>
                 </TableCell>
               </TableRow>
