@@ -27,7 +27,7 @@ export default function AddToCart({ open, setOpen }: Props) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="right-0 top-0 h-full w-[380px] rounded-none">
+      <DrawerContent className="right-0 top-0 h-full w-95 rounded-none">
         <DrawerHeader>
           <DrawerTitle>Your Cart</DrawerTitle>
         </DrawerHeader>
