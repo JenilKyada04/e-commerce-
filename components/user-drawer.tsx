@@ -49,6 +49,52 @@ export default function UserDrawer({
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
       <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background">
+
+          <DrawerHeader className="border-b px-6 py-5">
+          <DrawerTitle className="text-xl font-semibold">
+            Add User
+          </DrawerTitle>
+          <DrawerDescription className="text-sm text-muted-foreground">
+            Update user details 
+          </DrawerDescription>
+        </DrawerHeader>
+
+
+          <div className=" gap-4 p-6 ">
+            <label htmlFor="">Name</label>
+          <Input
+            placeholder="Username"
+            type="name"
+            value={username}
+            onChange={e => setusername(e.target.value)}
+            required
+            className="mb-3"
+          />
+          <label htmlFor="">Phone</label>
+          <Input
+            placeholder="Phone"
+            type="number"
+            value={phone}
+            onChange={e => setphone(e.target.value)}
+            required
+             className="mb-3"
+          />
+          <label htmlFor="">Email</label>
+          <Input
+            placeholder="Email"
+            value={email}
+            onChange={e => setemail(e.target.value)}
+            required
+            type="email"
+             className="mb-3"
+          />
+          {/* <Button onClick={addUser}>Add</Button> */}
+          <Button>Add</Button>
+
+        </div>
+
+
+
         <DrawerHeader className="border-b px-6 py-5">
           <DrawerTitle className="text-xl font-semibold">
             Edit User
@@ -57,6 +103,8 @@ export default function UserDrawer({
             Update user details or remove the user permanently.
           </DrawerDescription>
         </DrawerHeader>
+        
+        
 
         <div className="flex-1 space-y-5 px-6 py-6">
           <div className="space-y-2">

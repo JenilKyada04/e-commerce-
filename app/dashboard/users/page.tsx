@@ -118,24 +118,30 @@ export default function Page() {
 
       <div className="p-4 space-y-6">
         <span className="font-semibold text-2xl">User Details :-</span>
-        <div className="flex gap-4 mt-5">
+         <div className="flex gap-4      mt-5">
           <Input
             placeholder="Username"
+            type="name"
             value={username}
             onChange={e => setusername(e.target.value)}
+            required
           />
           <Input
             placeholder="Phone"
+            type="number"
             value={phone}
             onChange={e => setphone(e.target.value)}
+            required
           />
           <Input
             placeholder="Email"
             value={email}
             onChange={e => setemail(e.target.value)}
+            required
+            type="email"
           />
           <Button onClick={addUser}>Add</Button>
-        </div>
+        </div> 
 
         <Table>
           <TableCaption>User List</TableCaption>

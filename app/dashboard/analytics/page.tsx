@@ -157,7 +157,7 @@ export default function Page() {
                             <TableHead>Category</TableHead>
                             <TableHead>Stock</TableHead>
                             <TableHead className="text-right">Price</TableHead>
-                            <TableHead className="text-right">(Edit/Delete)</TableHead>
+                            <TableHead className="text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
 

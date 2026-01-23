@@ -3,6 +3,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Navbar from "@/components/navbar";
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardLayout({
   children,
@@ -11,7 +12,7 @@ export default function DashboardLayout({
 }) {
   return (
     
-    <Suspense fallback={<div className="p-6 m-3 text-4xl">Loading dashboard...</div>}>
+    <Suspense fallback={<Skeleton/>}>
 
         <SidebarProvider>
           <div className="flex h-screen w-screen overflow-hidden">

@@ -2,11 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  // const credentials = { username: 'john_doe', password: 'pass123' };
+  // axios.post('https://fakestoreapi.com/auth/login', credentials)
+  //   .then(response => console.log(response.data));
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,4 +57,3 @@ export default function LoginPage() {
     </div>
   );
 }
-  

@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function AdminPopover() {
   return (
@@ -64,9 +65,9 @@ export function AdminPopover() {
             className="w-full justify-start gap-2">
 
             <LogOut className="h-4 w-4 " />
-            <div onClick={() => window.location.href = "https://www.google.com"} className="cursor-pointer">
+            <Link href={"/login"} className="cursor-pointer">
               Logout
-            </div>
+            </Link>
           </Button>
         </div>
       </PopoverContent>

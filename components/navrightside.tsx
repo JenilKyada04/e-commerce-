@@ -1,9 +1,9 @@
-import React from 'react'
 
-import { Bell, Search, User } from "lucide-react";
+import {  Search, ShoppingCart } from "lucide-react";
 import { useQueryState } from 'nuqs'
 import { NotificationPopover } from './notificationPopover';
 import { AdminPopover } from './adminPopover';
+import Link from 'next/link';
 
 function Navrightside() {
 
@@ -21,12 +21,11 @@ function Navrightside() {
                     />
                 </div>
 
-                <button >
-                    <NotificationPopover/>
-                </button>
-
-                
-                    <AdminPopover/>
+                <Link href={"/dashboard/checkout"} >
+                    <ShoppingCart />
+                </Link>
+                <NotificationPopover />
+                <AdminPopover />
             </div>
         </div>
     )
