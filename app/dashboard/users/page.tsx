@@ -39,7 +39,7 @@ export default function Page() {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL_CART
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER
 
 
   useEffect(() => {

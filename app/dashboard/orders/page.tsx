@@ -29,14 +29,15 @@ export default function Page() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(false)
 
-  const API_URL = process.env.NEXT_PUBLIC_FAKESTORE_API_KEY
-    ? `https://fakestoreapi.com/carts?api_key=${process.env.NEXT_PUBLIC_FAKESTORE_API_KEY}`
-    : "https://fakestoreapi.com/carts"
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL_CART as string
 
   const fetchOrders = async () => {
     try {
       setLoading(true)
+
       const res = await axios.get(API_URL)
+
       setOrders(res.data)
     } catch (error) {
       console.error("Error fetching orders", error)
@@ -44,6 +45,7 @@ export default function Page() {
       setLoading(false)
     }
   }
+
 
   useEffect(() => {
     fetchOrders()
