@@ -31,24 +31,26 @@ export default function ProductPage() {
   const [open, setOpen] = useState(false)
 
 
-  // const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT
+const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT
 
-  useEffect(() => {
-    if (!productId) return
+useEffect(() => {
+  if (!productId || !apiUrl) return
 
-    const controller = new AbortController()
+  const controller = new AbortController()
 
-    axios.get(`https://fakestoreapi.com/products/${productId}`, {
+  axios.get(`${apiUrl}/${productId}`, {
       signal: controller.signal,
     })
-      .then((res) => {
-        setProduct(res.data)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
+    .then((res) => {
+      setProduct(res.data)
+      setLoading(false)
+    })
+    .catch(() => setLoading(false))
 
-    return () => controller.abort()
-  }, [productId])
+  return () => controller.abort()
+}, [productId])
+
+
 
   if (loading) return <p className="p-6 text-center">Loading...</p>
   if (!product) return <p className="p-6 text-center">Product not found</p>
