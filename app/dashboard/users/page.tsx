@@ -41,25 +41,23 @@ export default function Page() {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL_CART
 
-  if (!apiUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL_CART is missing")
-  }
-
-  const fetchUsers = async () => {
-    try {
-      setLoading(true)
-      const res = await axios.get<User[]>(apiUrl)
-      setUsers(res.data)
-    } catch (error) {
-      console.error("Fetch error:", error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
-    fetchUsers()
-  }, [apiUrl])
+    if (!apiUrl) {
+      console.error("API URL is missing")
+      setLoading(false)
+      return
+    }
+
+    axios.get(apiUrl)
+      .then((res) => {
+        setUsers(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
   const addUser = () => {
     if (!username || !email || !phone) return
@@ -119,7 +117,7 @@ export default function Page() {
     <>
 
       <div className="p-4 space-y-6">
-      <span className="font-semibold text-2xl">User Details :-</span>
+        <span className="font-semibold text-2xl">User Details :-</span>
         <div className="flex gap-4 mt-5">
           <Input
             placeholder="Username"
@@ -135,7 +133,7 @@ export default function Page() {
             placeholder="Email"
             value={email}
             onChange={e => setemail(e.target.value)}
-          />  
+          />
           <Button onClick={addUser}>Add</Button>
         </div>
 

@@ -10,16 +10,17 @@ type Product = {
 }
 
 type CartItem = Product & {
-  quantity: number
+  quantity: number;
 }
 
 type CartContextType = {
   cart: CartItem[]
-  addToCart: (product: Product) => void
+  addToCart: (product: Product) => void 
   increaseQty: (id: number) => void
   decreaseQty: (id: number) => void
   removeItem: (id: number) => void
 }
+
 
 const CartContext = createContext<CartContextType | null>(null)
 

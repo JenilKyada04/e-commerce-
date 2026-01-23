@@ -120,10 +120,6 @@ export default function ProductPage() {
       <AddToCart
         open={open}
         setOpen={setOpen}
-        cart={cart}
-        increaseQty={increaseQty}
-        decreaseQty={decreaseQty}
-        removeItem={removeItem}
       />
     </>
   )

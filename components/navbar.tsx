@@ -22,9 +22,9 @@ export default function Navbar() {
                 <TooltipContent>
                     <p>Add to library</p>
                 </TooltipContent>
-            </Tooltip>
+            </Tooltip> */}
 
-            <Navrightside /> */}
+            <Navrightside /> 
 
         </div>
     );

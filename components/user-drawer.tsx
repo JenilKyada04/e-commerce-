@@ -49,7 +49,6 @@ export default function UserDrawer({
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
       <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background">
-        {/* Header */}
         <DrawerHeader className="border-b px-6 py-5">
           <DrawerTitle className="text-xl font-semibold">
             Edit User
@@ -59,7 +58,6 @@ export default function UserDrawer({
           </DrawerDescription>
         </DrawerHeader>
 
-        {/* Form */}
         <div className="flex-1 space-y-5 px-6 py-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Username</label>
@@ -101,7 +99,6 @@ export default function UserDrawer({
           </div>
         </div>
 
-        {/* Footer */}
         <DrawerFooter className="border-t px-6 py-4">
           <div className="flex gap-3">
             <Button onClick={onUpdate} className="flex-1">

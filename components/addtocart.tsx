@@ -18,6 +18,7 @@ type Props = {
 }
 
 export default function AddToCart({ open, setOpen }: Props) {
+  
   const { cart, increaseQty, decreaseQty, removeItem } = useCart()
 
   const total = cart.reduce(
