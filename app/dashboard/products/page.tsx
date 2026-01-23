@@ -44,7 +44,6 @@ export default function Page() {
 
 
 
-
     if (loading) return <p>Loading products...</p>
 
     return (

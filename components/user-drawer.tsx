@@ -122,7 +122,7 @@ export default function UserDrawer({
             <Button
               variant="ghost"
               onClick={onCancel}
-              className="mt-3 w-full"
+              className="mt-3 w-full bg-gray-200"
             >
               <X className="mr-2 h-4 w-4" />
               Cancel
