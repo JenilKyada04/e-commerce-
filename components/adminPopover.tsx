@@ -6,9 +6,17 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export function AdminPopover() {
+
+  const route = useRouter();
+
+  const handleLogout = async()=>{
+    await fetch("api/auth/logout" , {method: "POST"});
+    route.replace("/login");
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -61,13 +69,14 @@ export function AdminPopover() {
 
         <div className="p-2">
           <Button
+          onClick={handleLogout}
             variant="destructive"
-            className="w-full justify-start gap-2">
+            className="w-full justify-start gap-2 cursor-pointer">
 
             <LogOut className="h-4 w-4 " />
-            <Link href={"/login"} className="cursor-pointer">
+            <span  className="">
               Logout
-            </Link>
+            </span>
           </Button>
         </div>
       </PopoverContent>

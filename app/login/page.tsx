@@ -2,26 +2,47 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { loadProjectInfo } from "next/dist/build/webpack-config";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // const credentials = { username: 'john_doe', password: 'pass123' };
-  // axios.post('https://fakestoreapi.com/auth/login', credentials)
-  //   .then(response => console.log(response.data));
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    if (username === "jenil" && password === "123") {
-      router.push("/dashboard");
-    } else {
-      alert("Please enter username and password");
+    // if (username === "jenil" && password === "123") {
+    //   localStorage.setItem("isAuth" , " true");
+    //   router.push("/dashboard");
+    // } else {
+    //   alert("Please enter username and password");
+    // }
+
+    try {
+
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      })
+
+      if (res.ok) {
+        router.replace("/dashboard");
+      } else {
+        alert("Login Failed");
+      }
+    } catch(error){
+      console.error(error);
+      alert("Somthing went wrong")
+      setLoading(false)
     }
-  };
+
+};
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-6">
@@ -49,9 +70,10 @@ export default function LoginPage() {
 
         <button
           type="submit"
+          disabled={loading}
           className="w-full cursor-pointer rounded bg-primary px-4 py-2 text-white hover:opacity-90"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>
