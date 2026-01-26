@@ -27,6 +27,7 @@ type UserDrawerProps = {
   setemail: (v: string) => void
 
   editingId: number | null
+  onAdd: () => void
   onUpdate: () => void
   onDelete: () => void
   onCancel: () => void
@@ -42,71 +43,31 @@ export default function UserDrawer({
   setphone,
   setemail,
   editingId,
+  onAdd,
   onUpdate,
   onDelete,
   onCancel,
 }: UserDrawerProps) {
+  const isEdit = Boolean(editingId)
+
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background">
-
-          <DrawerHeader className="border-b px-6 py-5">
-          <DrawerTitle className="text-xl font-semibold">
-            Add User
-          </DrawerTitle>
-          <DrawerDescription className="text-sm text-muted-foreground">
-            Update user details 
-          </DrawerDescription>
-        </DrawerHeader>
-
-
-          <div className=" gap-4 p-6 ">
-            <label htmlFor="">Name</label>
-          <Input
-            placeholder="Username"
-            type="name"
-            value={username}
-            onChange={e => setusername(e.target.value)}
-            required
-            className="mb-3"
-          />
-          <label htmlFor="">Phone</label>
-          <Input
-            placeholder="Phone"
-            type="number"
-            value={phone}
-            onChange={e => setphone(e.target.value)}
-            required
-             className="mb-3"
-          />
-          <label htmlFor="">Email</label>
-          <Input
-            placeholder="Email"
-            value={email}
-            onChange={e => setemail(e.target.value)}
-            required
-            type="email"
-             className="mb-3"
-          />
-          {/* <Button onClick={addUser}>Add</Button> */}
-          <Button>Add</Button>
-
-        </div>
-
-
+      <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background flex flex-col">
 
         <DrawerHeader className="border-b px-6 py-5">
           <DrawerTitle className="text-xl font-semibold">
-            Edit User
+            {isEdit ? "Edit User" : "Add User"}
           </DrawerTitle>
           <DrawerDescription className="text-sm text-muted-foreground">
-            Update user details or remove the user permanently.
+            {isEdit
+              ? "Update user details or delete the user."
+              : "Fill in the details to add a new user."}
           </DrawerDescription>
         </DrawerHeader>
-        
-        
 
         <div className="flex-1 space-y-5 px-6 py-6">
+
+          {/* Username */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Username</label>
             <div className="relative">
@@ -120,6 +81,7 @@ export default function UserDrawer({
             </div>
           </div>
 
+          {/* Phone */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Phone</label>
             <div className="relative">
@@ -133,6 +95,7 @@ export default function UserDrawer({
             </div>
           </div>
 
+          {/* Email */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Email</label>
             <div className="relative">
@@ -145,16 +108,20 @@ export default function UserDrawer({
               />
             </div>
           </div>
+
         </div>
 
         <DrawerFooter className="border-t px-6 py-4">
           <div className="flex gap-3">
-            <Button onClick={onUpdate} className="flex-1">
+            <Button
+              onClick={isEdit ? onUpdate : onAdd}
+              className="flex-1"
+            >
               <Save className="mr-2 h-4 w-4" />
-              Save Changes
+              {isEdit ? "Save Changes" : "Add User"}
             </Button>
 
-            {editingId && (
+            {isEdit && (
               <Button
                 variant="destructive"
                 onClick={onDelete}
@@ -177,6 +144,7 @@ export default function UserDrawer({
             </Button>
           </DrawerClose>
         </DrawerFooter>
+
       </DrawerContent>
     </Drawer>
   )

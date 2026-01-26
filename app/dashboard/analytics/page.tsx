@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/table"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 
 type Product = {
     id: number
@@ -27,6 +26,8 @@ type Product = {
         rate: number
         count: number
     }
+    stock: number 
+
 }
 
 export default function Page() {
@@ -37,6 +38,7 @@ export default function Page() {
     const [price, setPrice] = useState("")
     const [category, setCategory] = useState("")
     const [editingId, setEditingId] = useState<number | null>(null)
+    const [stock, setStock] = useState("")
 
     const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -59,40 +61,51 @@ export default function Page() {
     }, [])
 
     const addProduct = async () => {
-        if (!title || !price || !category) return
-
+        if (!title || !price || !category || !stock) return;
+      
         try {
-            const res = await axios.post(apiUrl, {
-                title,
-                price: Number(price),
-                category,
-                description: "New product",
-                image: "https://i.pravatar.cc",
-            })
-
-            setProducts([res.data, ...products])
-            resetForm()
+          const res = await axios.post(apiUrl, {
+            title,
+            price: Number(price),
+            category,
+            stock: Number(stock),
+            description: "New product",
+            image: "https://i.pravatar.cc",
+          });
+      
+          const nextId = products.length > 0 
+            ? Math.max(...products.map(p => p.id || 0)) + 1
+            : 1;
+      
+          const newProduct = { ...res.data, id: nextId };
+      
+          setProducts([newProduct, ...products]);
+          resetForm();
         } catch (err) {
-            console.error(err)
+          console.error(err);
         }
-    }
+      };
+      
+      
 
-    const updateProduct = async () => {
+      const updateProduct = async () => {
         if (!editingId) return
-
+      
         try {
-            const res = await axios.put(`${apiUrl}/${editingId}`, {
-                title,
-                price: Number(price),
-                category,
-            })
-
-            setProducts(products.map(p => (p.id === editingId ? res.data : p)))
-            resetForm()
+          const res = await axios.put(`${apiUrl}/${editingId}`, {
+            title,
+            price: Number(price),
+            category,
+            stock: Number(stock), 
+          })
+      
+          setProducts(products.map(p => (p.id === editingId ? res.data : p)))
+          resetForm()
         } catch (err) {
-            console.error(err)
+          console.error(err)
         }
-    }
+      }
+      
 
     const deleteProduct = async (id: number) => {
         try {
@@ -108,43 +121,36 @@ export default function Page() {
         setTitle(product.title)
         setPrice(String(product.price))
         setCategory(product.category)
+        setStock(String(product.stock)) 
         setDrawerOpen(true)
-    }
+      }
+      
 
-    const resetForm = () => {
+      const resetForm = () => {
         setTitle("")
         setPrice("")
         setCategory("")
+        setStock("") 
         setEditingId(null)
         setDrawerOpen(false)
-    }
+      }
+      
 
     if (loading) return <p className="p-6">Loading...</p>
 
     return (
         <>
-        <span className="font-semibold text-2xl hover:underline cursor-pointer pl-6.5">Products Details :-</span>
             <div className="p-6 space-y-6">
 
-                <div className="flex gap-4">
-                    <Input
-                        placeholder="Title"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Price"
-                        type="number"
-                        value={price}
-                        onChange={e => setPrice(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Category"
-                        value={category}
-                        onChange={e => setCategory(e.target.value)}
-                    />
+                <div className="flex justify-between items-center">
 
-                    <Button onClick={addProduct}>Add</Button>
+                    <span className="font-semibold text-2xl">Product Details :-</span>
+                    <Button onClick={() => {
+                        resetForm()
+                        setDrawerOpen(true)
+                    }}>
+                        + Add Product
+                    </Button>
                 </div>
 
                 <Table className="">
@@ -193,7 +199,10 @@ export default function Page() {
                     setTitle={setTitle}
                     setPrice={setPrice}
                     setCategory={setCategory}
+                    stock={stock} 
+                    setStock={setStock} 
                     editingId={editingId}
+                    onAdd={addProduct} 
                     onUpdate={updateProduct}
                     onDelete={() => {
                         if (editingId) deleteProduct(editingId)

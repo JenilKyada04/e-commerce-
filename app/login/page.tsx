@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loadProjectInfo } from "next/dist/build/webpack-config";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");

@@ -1,55 +1,56 @@
 import { NextResponse } from "next/server"
-
-// export async function POST(req: Request) {
-//   const { username, password } = await req.json()
-
-//   if (username === "jenil" && password === "1234") {
-//     const response = NextResponse.json({ success: true })
-
-//     response.cookies.set("token", "true", {
-//       httpOnly: true,
-//       path: "/",
-//     })
-
-//     return response
-//   }
-
-//   return NextResponse.json(
-//     { success: false },
-//     { status: 401 }
-//   )
-// }
-
 import axios from "axios"
 
 export async function POST(req: Request) {
-    const { username, password } = await req.json();
+  const { username, password } = await req.json()
 
-    try {
-        const response = await axios.post("https://fakestoreapi.com/auth/login", {
-            username,
-            password
-        });
+  if (username === "jenil" && password === "1234") {
+    const response = NextResponse.json({ success: true })
 
-        const token = response.data.token;
+    response.cookies.set("token", "true", {
+      httpOnly: true,
+      path: "/",
+    })
 
-        const res = NextResponse.json({ success: true });
+    return response
+  }
 
-        res.cookies.set("token", token, {
-            httpOnly: true,
-            path: "/",
-            sameSite: "lax",
-        });
-
-        return res;
-    }
-    catch (error) {
-        return NextResponse.json(
-            { success: false },
-            { status: 401 }
-        );
-    }
+  return NextResponse.json(
+    { success: false },
+    { status: 401 }
+  )
 }
+
+
+
+// export async function POST(req: Request) {
+//     const { username, password } = await req.json();
+
+//     try {
+//         const response = await axios.post("https://fakestoreapi.com/auth/login", {
+//             username,
+//             password
+//         });
+
+//         const token = response.data.token;
+
+//         const res = NextResponse.json({ success: true });
+
+//         res.cookies.set("token", token, {
+//             httpOnly: true,
+//             path: "/",
+//             sameSite: "lax",
+//         });
+
+//         return res;
+//     }
+//     catch (error) {
+//         return NextResponse.json(
+//             { success: false },
+//             { status: 401 }
+//         );
+//     }
+// }
 
 
 

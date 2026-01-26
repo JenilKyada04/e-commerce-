@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Trash2, Save, X } from "lucide-react"
+import { Save, Trash2, X } from "lucide-react"
 
 type ProductDrawerProps = {
   open: boolean
@@ -20,12 +20,15 @@ type ProductDrawerProps = {
   title: string
   price: string
   category: string
+  stock: string
 
   setTitle: (v: string) => void
   setPrice: (v: string) => void
   setCategory: (v: string) => void
+  setStock: (v: string) => void
 
   editingId: number | null
+  onAdd: () => void
   onUpdate: () => void
   onDelete: () => void
   onCancel: () => void
@@ -37,23 +40,31 @@ export default function ProductDrawer({
   title,
   price,
   category,
+  stock,
   setTitle,
   setPrice,
   setCategory,
+  setStock,
   editingId,
+  onAdd,
   onUpdate,
   onDelete,
   onCancel,
 }: ProductDrawerProps) {
+  const isEdit = Boolean(editingId)
+
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background">
+      <DrawerContent className="ml-auto h-screen w-full max-w-md rounded-none border-l bg-background flex flex-col">
+
         <DrawerHeader className="border-b px-6 py-5">
           <DrawerTitle className="text-xl font-semibold">
-            Edit Product
+            {isEdit ? "Edit Product" : "Add Product"}
           </DrawerTitle>
           <DrawerDescription className="text-sm text-muted-foreground">
-            Update product details or remove it permanently.
+            {isEdit
+              ? "Update product details or delete the product."
+              : "Fill in the details to add a new product."}
           </DrawerDescription>
         </DrawerHeader>
 
@@ -70,8 +81,8 @@ export default function ProductDrawer({
           <div className="space-y-2">
             <label className="text-sm font-medium">Price</label>
             <Input
-              placeholder="Enter price"
               type="number"
+              placeholder="Enter price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
@@ -80,21 +91,34 @@ export default function ProductDrawer({
           <div className="space-y-2">
             <label className="text-sm font-medium">Category</label>
             <Input
-              placeholder="e.g. Electronics"
+              placeholder="Enter category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Stock</label>
+            <Input
+              type="number"
+              placeholder="Enter stock quantity"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
             />
           </div>
         </div>
 
         <DrawerFooter className="border-t px-6 py-4">
           <div className="flex gap-3">
-            <Button onClick={onUpdate} className="flex-1">
+            <Button
+              onClick={isEdit ? onUpdate : onAdd}
+              className="flex-1"
+            >
               <Save className="mr-2 h-4 w-4" />
-              Save Changes
+              {isEdit ? "Save Changes" : "Add Product"}
             </Button>
 
-            {editingId && (
+            {isEdit && (
               <Button
                 variant="destructive"
                 onClick={onDelete}
@@ -117,6 +141,7 @@ export default function ProductDrawer({
             </Button>
           </DrawerClose>
         </DrawerFooter>
+
       </DrawerContent>
     </Drawer>
   )

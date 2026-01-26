@@ -3,6 +3,7 @@ import Link from "next/link"
 import axios from "axios"
 
 import { useEffect, useState } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type Product = {
     id: number
@@ -44,7 +45,34 @@ export default function Page() {
 
 
 
-    if (loading) return <p>Loading products...</p>
+    if (loading)
+        return (
+          <>
+            <span className="font-semibold text-3xl">Products</span>
+      
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-xl border bg-white p-2 md:p-3 shadow-sm"
+                >
+                  <Skeleton className="mb-4 h-44 w-full rounded-lg" />
+      
+                  <Skeleton className="mb-2 h-4 w-full" />
+                  <Skeleton className="mb-3 h-4 w-3/4" />
+      
+                  <Skeleton className="mb-3 h-4 w-24" />
+      
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-6 w-20" />
+                    <Skeleton className="h-9 w-20 rounded-lg" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )
+      
 
     return (
         <>
