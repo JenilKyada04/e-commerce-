@@ -16,13 +16,12 @@ import {
 
 import { Button } from "@/components/ui/button"
 import UserDrawer from "@/components/user-drawer"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type User = {
   id: number
-  name: {
-    firstname: string
-    lastname: string
-  } | null
+  firstName?: string
+  lastName: string
   username: string
   email: string
   phone: string
@@ -32,9 +31,12 @@ export default function Page() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
 
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -44,12 +46,12 @@ export default function Page() {
     try {
       setLoading(true)
       const res = await axios.get(apiUrl)
-      setUsers(res.data)
-  } catch (err) {
+      setUsers(res.data.users)
+    } catch (err) {
       console.error(err)
-  } finally {
+    } finally {
       setLoading(false)
-  }
+    }
   }
 
   useEffect(() => {
@@ -57,79 +59,61 @@ export default function Page() {
   }, [])
 
   const addUser = async () => {
-    if (!username || !email || !phone) return
-  
-    const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1
-  
-    const newUser = {
-      id: newId,
-      username,
-      email,
-      
-      phone,
-      name: { firstname: "New", lastname: "User" },
+    if (!lastName || !username || !email || !phone) return
+
+    try {
+      const res = await axios.post(`${apiUrl}/add`, {
+        
+        firstName,
+        lastName,
+        username,
+        email,
+        phone,
+      })
+
+      const newUser: User = {
+        ...res.data,
+      }
+
+      setUsers(prev => [newUser, ...prev])
+      resetForm()
+    } catch (err) {
+      console.error(err)
     }
-  
-    setUsers([newUser, ...users])
-    resetForm()
   }
-
-// const addUser = async () => {
-//   if (!username || !email || !phone) return;
-
-//   try {
-//     const res = await axios.post(apiUrl, {
-//       username,
-//       email,
-//       phone,
-//       password: "pass123",
-//     });
-
-//     const newUser = { ...res.data, tempId: Date.now() }; 
-//     setUsers([newUser, ...users]);
-//     resetForm();
-//   } catch (err) {
-//     console.error(err);
-//     return;
-//   }
-// };
-
-  
 
   const updateUser = async () => {
     if (!editingId) return
 
-    const updatedUser = {
-      username,
-      email,
-      password: "pass123",
-      phone,
-    }
-
     try {
-      const response = await axios.put(`${apiUrl}/${editingId}`, updatedUser)
+      const res = await axios.put(`${apiUrl}/${editingId}`, {
+        firstName,
+        lastName,
+        username,
+        email,
+        phone,
+      })
 
-      setUsers(users.map(u => (u.id === editingId ? { ...response.data, name: response.data.name || { firstname: "", lastname: "" } } : u)))
+      setUsers(prev => [res.data, ...prev])
       resetForm()
-    } catch (error) {
-      console.error("Error updating user:", error)
+    } catch (err) {
+      console.error(err)
     }
-  }
+  } 
 
   const deleteUser = async (id: number) => {
-    if (!id) return
-
     try {
       await axios.delete(`${apiUrl}/${id}`)
-      setUsers(users.filter(u => u.id !== id))
-      resetForm()
-    } catch (error) {
-      console.error("Error deleting user:", error)
+      setUsers(prev => prev.filter(user => user.id !== id))
+    } catch (err) {
+      console.error(err)
     }
   }
 
   const editUser = (user: User) => {
     setEditingId(user.id)
+    setFirstName(user.firstName || "")
+    setLastName(user.lastName)
     setUsername(user.username)
     setEmail(user.email)
     setPhone(user.phone)
@@ -137,6 +121,8 @@ export default function Page() {
   }
 
   const resetForm = () => {
+    setFirstName("")
+    setLastName("")
     setUsername("")
     setEmail("")
     setPhone("")
@@ -144,24 +130,35 @@ export default function Page() {
     setDrawerOpen(false)
   }
 
-  if (loading) return <p className="p-6">Loading...</p>
+  const TableSkeleton = ({ rows = 15 }: { rows?: number }) => (
+    <>
+      {Array.from({ length: rows }).map((_, i) => (
+        <TableRow key={i}>
+          {Array.from({ length: 6 }).map((_, j) => (
+            <TableCell key={j}>
+              <Skeleton className="h-4 w-full" />
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
+  )
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <span className="font-semibold text-2xl">User Details :-</span>
-        <Button
-          onClick={() => {
-            resetForm()
-            setDrawerOpen(true)
-          }}
-        >
+        <h2 className="text-2xl font-semibold">User Details</h2>
+        <Button onClick={() => {
+          resetForm()
+          setDrawerOpen(true)
+        }}>
           + Add User
         </Button>
       </div>
 
       <Table>
         <TableCaption>User List</TableCaption>
+
         <TableHeader>
           <TableRow>
             <TableHead>ID</TableHead>
@@ -169,48 +166,53 @@ export default function Page() {
             <TableHead>Username</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Phone</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {users.map(user => (
-            <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>
-                {user.name?.firstname} {user.name?.lastname}
-              </TableCell>
-              <TableCell>{user.username}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone}</TableCell>
-              <TableCell className="text-right space-x-2">
-                <button
-                  onClick={() => editUser(user)}
-                  className="cursor-pointer px-4"
-                >
-                  <BsThreeDotsVertical />
-                </button>
+          {loading ? (
+            <TableSkeleton rows={10} />
+          ) : users.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={6} className="text-center py-6">
+                No users found
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            users.map(user => (
+              <TableRow key={user.id}>
+                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell className="text-right">
+                  <button onClick={() => editUser(user)}>
+                    <BsThreeDotsVertical className="cursor-pointer" />
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
 
       <UserDrawer
         open={drawerOpen}
         setOpen={setDrawerOpen}
+        lastName={lastName}
         username={username}
         email={email}
         phone={phone}
-        setusername={setUsername}
-        setemail={setEmail}
-        setphone={setPhone}
+        setLastName={setLastName}
+        setUsername={setUsername}
+        setEmail={setEmail}
+        setPhone={setPhone}
         editingId={editingId}
         onAdd={addUser}
         onUpdate={updateUser}
-        onDelete={() => {
-          if (editingId) deleteUser(editingId)
-        }}
+        onDelete={() => editingId && deleteUser(editingId)}
         onCancel={resetForm}
       />
     </div>

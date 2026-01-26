@@ -38,7 +38,7 @@ export default function Page() {
 
       const res = await axios.get(API_URL)
 
-      setOrders(res.data)
+      setOrders(res.data.carts)
     } catch (error) {
       console.error("Error fetching orders", error)
     } finally {

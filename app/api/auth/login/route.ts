@@ -1,72 +1,60 @@
 import { NextResponse } from "next/server"
 import axios from "axios"
 
+
 export async function POST(req: Request) {
-  const { username, password } = await req.json()
+  try {
+    const { username, password } = await req.json();
 
-  if (username === "jenil" && password === "1234") {
-    const response = NextResponse.json({ success: true })
+    if (username === "jenil" && password === "1234") {
+      const response = NextResponse.json({ success: true });
 
-    response.cookies.set("token", "true", {
-      httpOnly: true,
-      path: "/",
-    })
+      response.cookies.set("token", "dummy-token-12345", {
+        httpOnly: true,
+        path: "/",
+        maxAge: 60 * 30,
+      });
 
-    return response
+      return response;
+    }
+
+    return NextResponse.json({ success: false, message: "Invalid credentials" }, { status: 401 });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
   }
-
-  return NextResponse.json(
-    { success: false },
-    { status: 401 }
-  )
 }
 
 
 
-// export async function POST(req: Request) {
-//     const { username, password } = await req.json();
-
-//     try {
-//         const response = await axios.post("https://fakestoreapi.com/auth/login", {
-//             username,
-//             password
-//         });
-
-//         const token = response.data.token;
-
-//         const res = NextResponse.json({ success: true });
-
-//         res.cookies.set("token", token, {
-//             httpOnly: true,
-//             path: "/",
-//             sameSite: "lax",
-//         });
-
-//         return res;
-//     }
-//     catch (error) {
-//         return NextResponse.json(
-//             { success: false },
-//             { status: 401 }
-//         );
-//     }
-// }
 
 
 
-// export async function POST(req: Request) {
-//   const { username, password } = await req.json()
+// async function login() {
+//   try {
+//     const response = await axios.post(
+//       "https://dummyjson.com/auth/login",
+//       {
+//         username: "emilys",
+//         password: "emilyspass",
+//         expiresInMins: 30, 
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         withCredentials: true, 
+//       }
+//     );
 
-//   if (!username || !password) {
-//     return NextResponse.json({ error: "Missing fields" }, { status: 400 })
+//     console.log("Login Success:", response.data);
+//   } catch (error: any) {
+//     console.error(
+//       "Login failed:",
+//       error.response?.data || error.message
+//     );
 //   }
-
-//   const res = NextResponse.json({ success: true })
-
-//   res.cookies.set("token", "demo-token", {
-//     httpOnly: true, 
-//     path: "/",
-//   })
-
-//   return res
 // }
+
+// login();
+

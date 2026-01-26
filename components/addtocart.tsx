@@ -46,7 +46,7 @@ export default function AddToCart({ open, setOpen }: Props) {
               className="p-4 flex gap-4 border-b items-center"
             >
               <img
-                src={item.image}
+                src={item.thumbnail}
                 alt={item.title}
                 className="h-16 w-16 object-contain border rounded"
               />

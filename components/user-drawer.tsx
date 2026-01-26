@@ -18,13 +18,15 @@ type UserDrawerProps = {
   open: boolean
   setOpen: (open: boolean) => void
 
+  lastName: string
   username: string
-  phone: string
   email: string
+  phone: string
 
-  setusername: (v: string) => void
-  setphone: (v: string) => void
-  setemail: (v: string) => void
+  setLastName: (v: string) => void
+  setUsername: (v: string) => void
+  setEmail: (v: string) => void
+  setPhone: (v: string) => void
 
   editingId: number | null
   onAdd: () => void
@@ -33,15 +35,18 @@ type UserDrawerProps = {
   onCancel: () => void
 }
 
+
 export default function UserDrawer({
   open,
   setOpen,
+  lastName,
   username,
-  phone,
   email,
-  setusername,
-  setphone,
-  setemail,
+  phone,
+  setLastName,
+  setUsername,
+  setEmail,
+  setPhone,
   editingId,
   onAdd,
   onUpdate,
@@ -67,7 +72,17 @@ export default function UserDrawer({
 
         <div className="flex-1 space-y-5 px-6 py-6">
 
-          {/* Username */}
+            <label className="text-sm font-medium">Name</label>
+            <div className="relative">
+              <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                className="pl-9"
+                placeholder="Enter username"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+
           <div className="space-y-2">
             <label className="text-sm font-medium">Username</label>
             <div className="relative">
@@ -76,12 +91,11 @@ export default function UserDrawer({
                 className="pl-9"
                 placeholder="Enter username"
                 value={username}
-                onChange={(e) => setusername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Phone */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Phone</label>
             <div className="relative">
@@ -90,12 +104,11 @@ export default function UserDrawer({
                 className="pl-9"
                 placeholder="Enter phone number"
                 value={phone}
-                onChange={(e) => setphone(e.target.value)}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Email */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Email</label>
             <div className="relative">
@@ -104,7 +117,7 @@ export default function UserDrawer({
                 className="pl-9"
                 placeholder="Enter email address"
                 value={email}
-                onChange={(e) => setemail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>

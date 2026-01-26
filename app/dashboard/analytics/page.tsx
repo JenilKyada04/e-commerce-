@@ -48,7 +48,7 @@ export default function Page() {
         try {
             setLoading(true)
             const res = await axios.get(apiUrl)
-            setProducts(res.data)
+            setProducts(res.data.products)
         } catch (err) {
             console.error(err)
         } finally {
@@ -64,27 +64,24 @@ export default function Page() {
         if (!title || !price || !category || !stock) return;
       
         try {
-          const res = await axios.post(apiUrl, {
+          const res = await axios.post(`${apiUrl}/add`, {
             title,
             price: Number(price),
             category,
             stock: Number(stock),
-            description: "New product",
-            image: "https://i.pravatar.cc",
           });
       
-          const nextId = products.length > 0 
-            ? Math.max(...products.map(p => p.id || 0)) + 1
-            : 1;
+          const newProduct: Product = {
+            ...res.data,
+          };
       
-          const newProduct = { ...res.data, id: nextId };
-      
-          setProducts([newProduct, ...products]);
+          setProducts(prev => [newProduct, ...prev]);
           resetForm();
         } catch (err) {
           console.error(err);
         }
       };
+      
       
       
 
@@ -173,7 +170,8 @@ export default function Page() {
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.title}</TableCell>
                                 <TableCell>{item.category}</TableCell>
-                                <TableCell>{item.rating?.count ?? "-"}</TableCell>
+                                
+                                <TableCell>{item.stock}</TableCell>
                                 <TableCell className="text-right">${item.price}</TableCell>
 
                                 <TableCell className="text-right space-x-2">
