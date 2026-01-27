@@ -1,35 +1,30 @@
+"use client"
 
-
-import type { Metadata } from "next";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import type { Metadata } from "next";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { CartProvider } from "@/context/cart-context"
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from "react";
 
-export const metadata: Metadata = {
-  title: "SaaS Dashboard",
-  description: "Modern SaaS Admin Dashboard built with Next.js",
-};
+// export const metadata: Metadata = {
+//   title: "SaaS Dashboard",
+//   description: "Modern SaaS Admin Dashboard built with Next.js",
+// };
 
-const quaryClient = new QueryClient()
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-background antialiased">
-
-
-        <NuqsAdapter>
-          <CartProvider>
-              {children}
-          </CartProvider>
-        </NuqsAdapter>
-      </body>
-    </html>
-
-  );
+    <QueryClientProvider client={queryClient}>
+      <NuqsAdapter>
+        <CartProvider>
+          {children}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </CartProvider>
+      </NuqsAdapter>
+    </QueryClientProvider>
+  )
 }

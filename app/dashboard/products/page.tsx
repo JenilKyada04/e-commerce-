@@ -2,10 +2,8 @@
 
 import Link from "next/link"
 import axios from "axios"
-import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQuery } from "@tanstack/react-query"
-
 
 type Product = {
   id: number
@@ -16,49 +14,45 @@ type Product = {
   category: string
 }
 
-// const fetchUsers = async () => {
-//   const res = await axios.get("https://dummyjson.com/users")
-//   return res.data.users
-// }
-
-export default function Page() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!
 
-  useEffect(() => {
-    axios
-      .get(apiUrl)
-      .then((res) => {
-        setProducts(res.data.products) 
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false))
-  }, [])
 
-  //  const { data, isLoading, error } = useQuery({
-  //   queryKey: ["users"],
-  //   queryFn: fetchUsers,
-  // })
+// const [products, setProducts] = useState<Product[]>([])
+// const [isLoading, setisLoading] = useState(true)
 
-  // if (isLoading) return <p>Loading...</p>
-  // if (error) return <p>Error!</p>
+// useEffect(() => {
+//   axios
+//     .get(apiUrl)
+//     .then((res) => {
+//       setProducts(res.data.products) 
+//     })
+//     .catch(console.error)
+//     .finally(() => setisLoading(false))
+// }, [])
 
-  
 
-  if (loading)
+
+const fetchProducts = async (): Promise<Product[]> => {
+  const res = await axios.get(apiUrl)
+  return res.data.products
+}
+
+export default function Page() {
+  const { data: products ,isLoading, isError, error,} = useQuery<Product[]>({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  })
+
+
+
+  if (isLoading) {
     return (
       <>
         <span className="font-semibold text-3xl">Products</span>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-xl border bg-white p-3 shadow-sm"
-            >
+            <div key={i} className="rounded-xl border bg-white p-3 shadow-sm">
               <Skeleton className="mb-4 h-44 w-full rounded-lg" />
               <Skeleton className="mb-2 h-4 w-full" />
               <Skeleton className="mb-3 h-4 w-3/4" />
@@ -68,13 +62,18 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL!
         </div>
       </>
     )
+  }
+
+  if (isError) {
+    return <p className="text-red-500">Error: {(error as Error).message}</p>
+  }
 
   return (
     <>
       <span className="font-semibold text-3xl">Products</span>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5">
-        {products.map((item) => (
+        {products?.map((item) => (
           <div
             key={item.id}
             className="group rounded-xl border bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"

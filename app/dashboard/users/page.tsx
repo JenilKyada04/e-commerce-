@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button"
 import UserDrawer from "@/components/user-drawer"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useQuery } from "@tanstack/react-query"
 
 type User = {
   id: number
@@ -40,6 +41,9 @@ export default function Page() {
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
+
+
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
 
   const fetchUsers = async () => {
@@ -57,6 +61,26 @@ export default function Page() {
   useEffect(() => {
     fetchUsers()
   }, [])
+
+  // const getpostdata = async () =>{
+  //       try {
+  //           const res = await axios.get(apiUrl);
+  //           return res.status === 200 ? res.data : [];
+  //       } catch (error) {
+  //           console.log(error)
+  //           return [];
+  //       }
+  //   }
+
+
+  // useQuery<any>({
+  //   queryKey : ["users"],
+  //   queryFn : getpostdata
+  // })
+
+
+
+
 
   const addUser = async () => {
     if (!lastName || !username || !email || !phone) return

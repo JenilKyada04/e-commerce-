@@ -6,6 +6,7 @@ import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import AddToCart from "@/components/addtocart"
 import { useCart } from "@/context/cart-context"
+import { useQuery } from "@tanstack/react-query"
 
 type Product = {
   id: number
@@ -34,26 +35,59 @@ export default function ProductPage() {
   const [open, setOpen] = useState(false)
   const [activeImage, setActiveImage] = useState<string>("")
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
+
+
+
+
+  // useEffect(() => {
+  //   if (!productId || !apiUrl) return
+
+  //   const controller = new AbortController()
+
+  //   axios
+  //     .get(`${apiUrl}/${productId}`, { signal: controller.signal })
+  //     .then((res) => {
+  //       setProduct(res.data)
+  //       setActiveImage(res.data.thumbnail)
+  //     })
+  //     .catch(console.error)
+  //     .finally(() => setLoading(false))
+
+  //   return () => controller.abort()
+  // }, [productId, apiUrl])
+
+  // if (loading) return <p className="p-6 text-center">Loading...</p>
+  // if (!product) return <p className="p-6 text-center">Product not found</p>
+
+
+  const fetchproducts = async (): Promise<Product[]> => {
+    const res = await axios.get(apiUrl)
+    return res.data.products
+  }
+
+  const {data : products, isLoading, isError, error} = useQuery<Product[]>({
+    queryKey: ["product"],
+    queryFn : fetchproducts
+  })
+
+
 
   useEffect(() => {
-    if (!productId || !apiUrl) return
+    if (products && productId) {
+      const foundProduct = products.find(p => p.id === Number(productId))
+      if (foundProduct) {
+        setProduct(foundProduct)
+        setActiveImage(foundProduct.thumbnail)
+      }
+    }
+    setLoading(isLoading)
+  }, [products, productId, isLoading])
 
-    const controller = new AbortController()
 
-    axios
-      .get(`${apiUrl}/${productId}`, { signal: controller.signal })
-      .then((res) => {
-        setProduct(res.data)
-        setActiveImage(res.data.thumbnail)
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false))
+  
 
-    return () => controller.abort()
-  }, [productId, apiUrl])
-
-  if (loading) return <p className="p-6 text-center">Loading...</p>
+  if (isLoading) return <p className="p-6 text-center">Loading...</p>
   if (!product) return <p className="p-6 text-center">Product not found</p>
 
   return (

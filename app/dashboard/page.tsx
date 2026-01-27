@@ -22,6 +22,8 @@ const DashboardPage: React.FC = () => {
     router.replace("/login");
   };
 
+  
+
   const apiurl = process.env.NEXT_PUBLIC_API_URL_USER!
   const apiproducts = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
   const apicarts = process.env.NEXT_PUBLIC_API_URL_CART!
@@ -47,6 +49,8 @@ const DashboardPage: React.FC = () => {
 
     fetchDashboardData();
   }, []);
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
