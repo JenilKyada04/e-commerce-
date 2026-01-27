@@ -4,6 +4,8 @@ import Link from "next/link"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useQuery } from "@tanstack/react-query"
+
 
 type Product = {
   id: number
@@ -14,11 +16,17 @@ type Product = {
   category: string
 }
 
+// const fetchUsers = async () => {
+//   const res = await axios.get("https://dummyjson.com/users")
+//   return res.data.users
+// }
+
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL!
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL!
 
   useEffect(() => {
     axios
@@ -29,6 +37,16 @@ export default function Page() {
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [])
+
+  //  const { data, isLoading, error } = useQuery({
+  //   queryKey: ["users"],
+  //   queryFn: fetchUsers,
+  // })
+
+  // if (isLoading) return <p>Loading...</p>
+  // if (error) return <p>Error!</p>
+
+  
 
   if (loading)
     return (

@@ -22,13 +22,17 @@ const DashboardPage: React.FC = () => {
     router.replace("/login");
   };
 
+  const apiurl = process.env.NEXT_PUBLIC_API_URL_USER!
+  const apiproducts = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
+  const apicarts = process.env.NEXT_PUBLIC_API_URL_CART!
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const [usersRes, productsRes, cartsRes] = await Promise.all([
-          axios.get("https://dummyjson.com/users"),
-          axios.get("https://dummyjson.com/products"),
-          axios.get("https://dummyjson.com/carts"),
+          axios.get(apiurl),
+          axios.get(apiproducts),
+          axios.get(apicarts),
         ]);
 
         setUsers(usersRes.data.users);

@@ -73,26 +73,10 @@ export default function ProductPage() {
                 <img
                   src={activeImage}
                   alt={product.title}
-                  className="h-80 object-contain transition-transform duration-500 hover:scale-110"
+                  className="md:h-120 object-contain transition-transform duration-500 hover:scale-110"
                 />
               </div>
 
-              <div className="grid grid-cols-4 gap-2">
-                {product.images.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt="product"
-                    onClick={() => setActiveImage(img)}
-                    className={`h-20 object-contain rounded-xl border bg-white p-2 cursor-pointer transition
-                      ${
-                        activeImage === img
-                          ? "border-black"
-                          : "hover:border-gray-400"
-                      }`}
-                  />
-                ))}
-              </div>
             </div>
 
             <div className="flex flex-col justify-center p-4 md:p-8">
