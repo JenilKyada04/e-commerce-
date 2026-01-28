@@ -38,6 +38,7 @@ const fetchProducts = async (): Promise<Product[]> => {
 }
 
 export default function Page() {
+  
   const { data: products ,isLoading, isError, error,} = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: fetchProducts,

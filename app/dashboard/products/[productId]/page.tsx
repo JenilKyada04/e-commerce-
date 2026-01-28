@@ -85,9 +85,12 @@ export default function ProductPage() {
   }, [products, productId, isLoading])
 
 
-  
-
   if (isLoading) return <p className="p-6 text-center">Loading...</p>
+
+    if (isError) {
+    return <p className="text-red-500">Error: {(error as Error).message}</p>
+  }
+
   if (!product) return <p className="p-6 text-center">Product not found</p>
 
   return (
