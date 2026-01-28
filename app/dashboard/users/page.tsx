@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
-import { BsThreeDotsVertical } from "react-icons/bs"
+import { BsThreeDots } from "react-icons/bs"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 
 import {
   Table,
@@ -15,9 +16,9 @@ import {
 } from "@/components/ui/table"
 
 import { Button } from "@/components/ui/button"
-import UserDrawer from "@/components/user-drawer"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useQuery } from "@tanstack/react-query"
+import UserDrawer from "@/components/user-drawer"
+
 
 type User = {
   id: number
@@ -28,107 +29,101 @@ type User = {
   phone: string
 }
 
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
+
+const fetchUsers = async (): Promise<User[]> => {
+  const res = await axios.get(apiUrl)
+  return res.data.users
+}
+
+
 export default function Page() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(false)
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
-
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
+  const queryClient = useQueryClient()
 
 
-
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
-
-  const fetchUsers = async () => {
-    try {
-      setLoading(true)
-      const res = await axios.get(apiUrl)
-      setUsers(res.data.users)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
-  // const getpostdata = async () =>{
-  //       try {
-  //           const res = await axios.get(apiUrl);
-  //           return res.status === 200 ? res.data : [];
-  //       } catch (error) {
-  //           console.log(error)
-  //           return [];
-  //       }
-  //   }
+  const { data: users = [],  isLoading,isError, error, } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+  })
 
 
-  // useQuery<any>({
-  //   queryKey : ["users"],
-  //   queryFn : getpostdata
-  // })
+  const addUserMutation = useMutation({
+    mutationFn: (newUser: Partial<User>) =>
+      axios.post(`${apiUrl}/add`, newUser),
+
+    onSuccess: (res) => {
+      queryClient.setQueryData<User[]>(["users"], old => 
+        old ? [res.data , ...old] : [res.data]
+       )
+      resetForm()
+    },
+  })
 
 
-  const addUser = async () => {
+  const updateUserMutation = useMutation({
+    mutationFn: (user: Partial<User> & { id: number }) =>
+      axios.put(`${apiUrl}/${user.id}`, user),
+
+    onSuccess: (res) => {
+      queryClient.setQueryData<User[]>(["users"] , old =>
+        old ?. map(u => (u.id === res.data.id ? res.data : u  )) ?? []
+      )
+      resetForm()
+    },
+  })
+
+
+  const deleteUserMutation = useMutation({
+    mutationFn: (id: number) =>
+      axios.delete(`${apiUrl}/${id}`),
+
+    onSuccess: (_ , id) => {
+      queryClient.setQueryData<User[]>(["users"] , old => 
+        old?.filter(u => u.id !== id) ?? []
+       )
+      resetForm()
+    },
+  })
+
+
+  const addUser = () => {
     if (!lastName || !username || !email || !phone) return
 
-    try {
-      const res = await axios.post(`${apiUrl}/add`, {
-        
-        firstName,
-        lastName,
-        username,
-        email,
-        phone,
-      })
-
-      const newUser: User = {
-        ...res.data,
-      }
-
-      setUsers(prev => [newUser, ...prev])
-      resetForm()
-    } catch (err) {
-      console.error(err)
-    }
+    addUserMutation.mutate({
+      firstName,
+      lastName,
+      username,
+      email,
+      phone,
+    })
   }
 
-  const updateUser = async () => {
+  const updateUser = () => {
     if (!editingId) return
 
-    try {
-      const res = await axios.put(`${apiUrl}/${editingId}`, {
-        firstName,
-        lastName,
-        username,
-        email,
-        phone,
-      })
+    updateUserMutation.mutate({
+      id: editingId,
+      firstName,
+      lastName,
+      username,
+      email,
+      phone,
+    })
+  }
 
-      setUsers(prev => [res.data, ...prev])
-      resetForm()
-    } catch (err) {
-      console.error(err)
-    }
-  } 
-
-  const deleteUser = async (id: number) => {
-    try {
-      await axios.delete(`${apiUrl}/${id}`)
-      setUsers(prev => prev.filter(user => user.id !== id))
-    } catch (err) {
-      console.error(err)
-    }
+  const deleteUser = () => {
+    if (!editingId) return
+    deleteUserMutation.mutate(editingId)
   }
 
   const editUser = (user: User) => {
@@ -151,7 +146,8 @@ export default function Page() {
     setDrawerOpen(false)
   }
 
-  const TableSkeleton = ({ rows = 15 }: { rows?: number }) => (
+
+  const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
     <>
       {Array.from({ length: rows }).map((_, i) => (
         <TableRow key={i}>
@@ -165,60 +161,77 @@ export default function Page() {
     </>
   )
 
+
+  if (isError) {
+    return <div className="p-6">Error: {(error as Error).message}</div>
+  }
+
+
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">User Details</h2>
-        <Button onClick={() => {
-          resetForm()
-          setDrawerOpen(true)
-        }}>
+      <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-2xl font-semibold text-gray-800">User Details</h2>
+        <Button
+          onClick={() => {
+            resetForm()
+            setDrawerOpen(true)
+          }}
+          className="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-200"
+        >
           + Add User
         </Button>
       </div>
-
-      <Table>
-        <TableCaption>User List</TableCaption>
-
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Username</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {loading ? (
-            <TableSkeleton rows={10} />
-          ) : users.length === 0 ? (
+    
+      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+        <Table className="min-w-full divide-y divide-gray-200">
+          <TableCaption className="text-left text-gray-500 py-2">User List</TableCaption>
+    
+          <TableHeader className="bg-gray-100">
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-6">
-                No users found
-              </TableCell>
+              <TableHead className="px-4 py-2 text-left text-gray-600">ID</TableHead>
+              <TableHead className="px-4 py-2 text-left text-gray-600">Name</TableHead>
+              <TableHead className="px-4 py-2 text-left text-gray-600">Username</TableHead>
+              <TableHead className="px-4 py-2 text-left text-gray-600">Email</TableHead>
+              <TableHead className="px-4 py-2 text-left text-gray-600">Phone</TableHead>
+              <TableHead className="px-4 py-2 text-right text-gray-600">Action</TableHead>
             </TableRow>
-          ) : (
-            users.map(user => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
-                <TableCell className="text-right">
-                  <button onClick={() => editUser(user)}>
-                    <BsThreeDotsVertical className="cursor-pointer" />
-                  </button>
+          </TableHeader>
+    
+          <TableBody className="bg-white divide-y divide-gray-200">
+            {isLoading ? (
+              <TableSkeleton />
+            ) : users.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-6 text-gray-500">
+                  No users found
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-
+            ) : (
+              users.map(user => (
+                <TableRow
+                  key={user.id}
+                  className="hover:bg-gray-50 transition duration-150"
+                >
+                  <TableCell className="px-4 py-2">{user.id}</TableCell>
+                  <TableCell className="px-4 py-2">{user.lastName}</TableCell>
+                  <TableCell className="px-4 py-2">{user.username}</TableCell>
+                  <TableCell className="px-4 py-2">{user.email}</TableCell>
+                  <TableCell className="px-4 py-2">{user.phone}</TableCell>
+                  <TableCell className="px-4 py-2 text-right">
+                    <button
+                      onClick={() => editUser(user)}
+                      className="p-2 rounded-full hover:bg-gray-200 transition"
+                    >
+                      <BsThreeDots className="text-gray-600" />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    
       <UserDrawer
         open={drawerOpen}
         setOpen={setDrawerOpen}
@@ -233,11 +246,10 @@ export default function Page() {
         editingId={editingId}
         onAdd={addUser}
         onUpdate={updateUser}
-        onDelete={() => editingId && deleteUser(editingId)}
+        onDelete={deleteUser}
         onCancel={resetForm}
       />
     </div>
+    
   )
 }
-
-
