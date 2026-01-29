@@ -153,23 +153,8 @@ export default function Page() {
   }
 
 
-  if (isLoading) return <p className="p-6">Loading...</p>
   if (isError) return <p className="p-6">Error: {(error as Error).message}</p>
 
-
-const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
-    <>
-      {Array.from({ length: rows }).map((_, i) => (
-        <TableRow key={i}>
-          {Array.from({ length: 6 }).map((_, j) => (
-            <TableCell key={j}>
-              <Skeleton className="h-4 w-full" />
-            </TableCell>
-          ))}
-        </TableRow>
-      ))}
-    </>
-  )
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
@@ -178,7 +163,7 @@ const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
 
         <div className="flex gap-3">
           <input type="text" placeholder="search products"
-           value={search || ''} onChange={e => setSearch(e.target.value)}
+            value={search || ''} onChange={e => setSearch(e.target.value)}
             className="hover:bg-gray-200 p-1 rounded-xl pl-6   ring-1  "
           />
           <Button
@@ -209,9 +194,15 @@ const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
           </TableHeader>
 
           <TableBody className="bg-white divide-y divide-gray-200">
-            {products.length === 0 ? (
+            {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-6 text-gray-500">
+                <TableCell colSpan={5} className="text-center py-6 text-gray-500">
+                  Loading products...
+                </TableCell>
+              </TableRow>
+            ) : products.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-6 text-gray-500">
                   No products found
                 </TableCell>
               </TableRow>
@@ -253,7 +244,7 @@ const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
               ))
             )}
           </TableBody>
-          
+
         </Table>
       </div>
 

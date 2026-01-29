@@ -18,13 +18,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>
-        <CartProvider>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </CartProvider>
-      </NuqsAdapter>
-    </QueryClientProvider>
+    <html>
+      <body>
+        <QueryClientProvider client={queryClient}>
+          <NuqsAdapter>
+            <CartProvider>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </CartProvider>
+          </NuqsAdapter>
+        </QueryClientProvider>
+      </body>
+    </html>
   )
 }

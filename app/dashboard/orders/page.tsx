@@ -38,7 +38,6 @@ export default function OrdersPage() {
 
       const res = await axios.get(API_URL)
 
-      // Map orders to include a default status (if API doesn't provide it)
       const ordersWithStatus: Order[] = res.data.carts.map((order: any) => ({
         ...order,
         status: order.status ?? "Completed", // default status
@@ -58,12 +57,10 @@ export default function OrdersPage() {
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">Orders</h2>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
         <Table className="min-w-full divide-y divide-gray-200">
           <TableCaption className="text-left text-gray-500 py-2">
