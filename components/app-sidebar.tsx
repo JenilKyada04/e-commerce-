@@ -32,6 +32,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
+
 
 const navigationItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -41,8 +44,19 @@ const navigationItems = [
   { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
 ];
 
+
+
+
+
+
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/login");
+  };
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
@@ -148,7 +162,7 @@ export function AppSidebar() {
                   <User className="mr-2 size-4" />
                   Account
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer text-destructive"  onClick={()=> window.location.href = "https://www.google.com" }>
+                <DropdownMenuItem className="cursor-pointer text-destructive"  onClick={handleLogout}>
                   <LogOut className="mr-2 size-4" />
                   Logout
                 </DropdownMenuItem>

@@ -35,13 +35,13 @@ export default function CheckoutPage() {
 
   if (!cart.length) {
     return (
-    <p className="p-6 text-center font-bold underline">Your cart is empty</p>
+    <p className="p-6 text-center font-bold underline ">Your cart is empty</p>
     )
   }
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6 border-2 rounded-3xl hover:shadow-xl cursor-pointer">
-      
+
       <h1 className="text-2xl font-bold">Checkout</h1>
 
       <Table>

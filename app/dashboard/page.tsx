@@ -8,6 +8,8 @@ import { User, Product, Cart } from "../types/index";
 import StatCard from "@/components/stat-card";
 import ProductTable from "@/components/product-table";
 import UserList from "@/components/user-list";
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const DashboardPage: React.FC = () => {
   const router = useRouter();
@@ -56,12 +58,18 @@ const DashboardPage: React.FC = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">📊 Admin Dashboard</h1>
-        <button
+          <div className="p-2">
+          <Button
           onClick={handleLogout}
-          className="rounded-full bg-black px-4 py-2 cursor-pointer text-white hover:opacity-90"
-        >
-          Logout
-        </button>
+            variant="destructive"
+            className="w-full justify-start gap-2 bg-black cursor-pointer">
+
+            <LogOut className="h-4 w-4 " />
+            <span  className="">
+              Logout
+            </span>
+          </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -78,7 +86,7 @@ const DashboardPage: React.FC = () => {
             <div className="lg:col-span-2">
               <ProductTable products={products} />
             </div>
-            <UserList users={users.slice(0, 5)} />
+            <UserList users={users.slice(0, 9)} />
           </div>
         </>
       )}

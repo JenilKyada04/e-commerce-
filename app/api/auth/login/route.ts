@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
-import axios from "axios"
-
+// import axios from "axios";
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +12,7 @@ export async function POST(req: Request) {
         httpOnly: true,
         path: "/",
         maxAge: 60 * 30,
-      });
+      }); 
 
       return response;
     }

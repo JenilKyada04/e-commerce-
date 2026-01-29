@@ -19,7 +19,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
             </tr>
           </thead>
           <tbody>
-            {products.slice(0, 6).map((product) => (
+            {products.slice(0, 10).map((product) => (
               <tr key={product.id} className="border-b last:border-none">
                 <td className="py-3">{product.title}</td>
                 <td>{product.brand}</td>
