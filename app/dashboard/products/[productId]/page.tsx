@@ -40,26 +40,6 @@ export default function ProductPage() {
 
 
 
-  // useEffect(() => {
-  //   if (!productId || !apiUrl) return
-
-  //   const controller = new AbortController()
-
-  //   axios
-  //     .get(`${apiUrl}/${productId}`, { signal: controller.signal })
-  //     .then((res) => {
-  //       setProduct(res.data)
-  //       setActiveImage(res.data.thumbnail)
-  //     })
-  //     .catch(console.error)
-  //     .finally(() => setLoading(false))
-
-  //   return () => controller.abort()
-  // }, [productId, apiUrl])
-
-  // if (loading) return <p className="p-6 text-center">Loading...</p>
-  // if (!product) return <p className="p-6 text-center">Product not found</p>
-
 
   const fetchproducts = async (): Promise<Product[]> => {
     const res = await axios.get(apiUrl)

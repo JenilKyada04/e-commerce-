@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import UserDrawer from "@/components/user-drawer"
+import { useQueryState } from "nuqs"
 
 
 type User = {
@@ -47,11 +48,14 @@ export default function Page() {
   const [phone, setPhone] = useState("")
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+    const [search, setSearch] = useQueryState("q", {
+    defaultValue: "",
+  })
 
   const queryClient = useQueryClient()
 
 
-  const { data: users = [],  isLoading,isError, error, } = useQuery({
+  const { data: users = [], isLoading, isError, error, } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
   })
@@ -62,9 +66,9 @@ export default function Page() {
       axios.post(`${apiUrl}/add`, newUser),
 
     onSuccess: (res) => {
-      queryClient.setQueryData<User[]>(["users"], old => 
-        old ? [res.data , ...old] : [res.data]
-       )
+      queryClient.setQueryData<User[]>(["users"], old =>
+        old ? [res.data, ...old] : [res.data]
+      )
       resetForm()
     },
   })
@@ -75,8 +79,8 @@ export default function Page() {
       axios.put(`${apiUrl}/${user.id}`, user),
 
     onSuccess: (res) => {
-      queryClient.setQueryData<User[]>(["users"] , old =>
-        old ?. map(u => (u.id === res.data.id ? res.data : u  )) ?? []
+      queryClient.setQueryData<User[]>(["users"], old =>
+        old?.map(u => (u.id === res.data.id ? res.data : u)) ?? []
       )
       resetForm()
     },
@@ -87,10 +91,10 @@ export default function Page() {
     mutationFn: (id: number) =>
       axios.delete(`${apiUrl}/${id}`),
 
-    onSuccess: (_ , id) => {
-      queryClient.setQueryData<User[]>(["users"] , old => 
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<User[]>(["users"], old =>
         old?.filter(u => u.id !== id) ?? []
-       )
+      )
       resetForm()
     },
   })
@@ -168,24 +172,30 @@ export default function Page() {
 
 
   return (
-      <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
+    <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">User Details</h2>
-        <Button
-          onClick={() => {
-            resetForm()
-            setDrawerOpen(true)
-          }}
-          className="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-200"
-        >
-          + Add User
-        </Button>
+        <div className="flex gap-2">
+             <input type="text" placeholder="search products"
+           value={search || ''} onChange={e => setSearch(e.target.value)}
+            className="hover:bg-gray-200 p-1 rounded-xl pl-6   ring-1  "
+          />
+          <Button
+            onClick={() => {
+              resetForm()
+              setDrawerOpen(true)
+            }}
+            className="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-200"
+          >
+            + Add User
+          </Button>
+        </div>
       </div>
-    
+
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
         <Table className="min-w-full divide-y divide-gray-200">
-          <TableCaption className="text-left text-gray-500 py-2">User List</TableCaption>
-    
+          <TableCaption className="text-center text-gray-500 py-2">User List</TableCaption>
+
           <TableHeader className="bg-gray-100">
             <TableRow>
               <TableHead className="px-4 py-2 text-left text-gray-600">ID</TableHead>
@@ -196,7 +206,7 @@ export default function Page() {
               <TableHead className="px-4 py-2 text-right text-gray-600">Action</TableHead>
             </TableRow>
           </TableHeader>
-    
+
           <TableBody className="bg-white divide-y divide-gray-200">
             {isLoading ? (
               <TableSkeleton />
@@ -212,14 +222,14 @@ export default function Page() {
                   key={user.id}
                   className="hover:bg-gray-50 transition duration-150"
                 >
-                  <TableCell className="px-4 py-2">{user.id}</TableCell>
+                  <TableCell className="px-4 py-2">{user.id}.</TableCell>
                   <TableCell className="px-4 py-2">{user.lastName}</TableCell>
                   <TableCell className="px-4 py-2">{user.username}</TableCell>
                   <TableCell className="px-4 py-2">{user.email}</TableCell>
                   <TableCell className="px-4 py-2">{user.phone}</TableCell>
                   <TableCell className="px-4 py-2 text-right">
                     <button
-                      onClick={() => editUser(user)}
+                      // onClick={() => editUser(user)}
                       className="p-2 rounded-full hover:bg-gray-200 transition"
                     >
                       <BsThreeDots className="text-gray-600" />
@@ -231,7 +241,7 @@ export default function Page() {
           </TableBody>
         </Table>
       </div>
-    
+
       <UserDrawer
         open={drawerOpen}
         setOpen={setDrawerOpen}
@@ -250,6 +260,6 @@ export default function Page() {
         onCancel={resetForm}
       />
     </div>
-    
+
   )
 }
