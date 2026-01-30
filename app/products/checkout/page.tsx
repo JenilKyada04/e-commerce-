@@ -1,10 +1,12 @@
-"use client"
+// "use client"
 
 import { useCart } from "@/context/cart-context"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
+import { Suspense } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 // import { useForm } from 'react-hook-form';
 // import Link from "next/link"
 import {
@@ -54,6 +56,7 @@ export default function CheckoutPage() {
 
   return (
     <>
+    <Suspense fallback={<div>Loading checkout...</div>}>
       <div className="p-3">
 
         <div className=" flex items-center justify-between m-3 border-b-2 max-w-360 mx-auto pl-10 md:pl-0" >
@@ -141,6 +144,7 @@ export default function CheckoutPage() {
           <Footer />
         </div>
       </div>
+      </Suspense>
     </>
   )
 }
