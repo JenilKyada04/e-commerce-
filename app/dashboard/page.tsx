@@ -52,8 +52,6 @@ const DashboardPage: React.FC = () => {
     fetchDashboardData();
   }, []);
 
-
-
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="flex justify-between items-center mb-8">

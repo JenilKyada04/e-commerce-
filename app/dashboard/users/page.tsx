@@ -172,7 +172,7 @@ export default function Page() {
 
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
+    <div className=" space-y-6 bg-gray-50 rounded-lg shadow-md">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">User Details</h2>
         <div className="flex gap-2">

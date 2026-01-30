@@ -56,10 +56,10 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-6">
+    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-6   ">
       <form
         onSubmit={handleLogin}
-        className="w-full max-w-sm rounded-lg bg-white p-8 shadow-md"
+        className="w-full max-w-sm rounded-lg bg-white p-8 border-2 hover:shadow-2xl cursor-pointer "
       >
         <h2 className="mb-6 text-2xl font-bold">Admin Login</h2>
 
@@ -82,7 +82,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full cursor-pointer rounded bg-primary px-4 py-2 text-white hover:opacity-90"
+          className="w-full  rounded bg-primary px-4 py-2 text-white hover:opacity-90"
         >
           {loading ? "Logging in..." : "Login"}
         </button>

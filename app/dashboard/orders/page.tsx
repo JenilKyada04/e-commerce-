@@ -23,7 +23,7 @@ type Order = {
   userId: number
   date: string
   products: CartProduct[]
-  status?: "Completed" | "Pending" | "Cancelled" // optional
+  status?: "Completed" | "Pending" | "Cancelled" 
 }
 
 export default function OrdersPage() {
@@ -40,7 +40,7 @@ export default function OrdersPage() {
 
       const ordersWithStatus: Order[] = res.data.carts.map((order: any) => ({
         ...order,
-        status: order.status ?? "Completed", // default status
+        status: order.status ?? "Completed", 
       }))
 
       setOrders(ordersWithStatus)
@@ -56,7 +56,7 @@ export default function OrdersPage() {
   }, [])
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
+    <div className=" space-y-6 bg-gray-50 rounded-lg shadow-md">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">Orders</h2>
       </div>
@@ -79,6 +79,7 @@ export default function OrdersPage() {
 
           <TableBody className="bg-white divide-y divide-gray-200">
             {loading ? (
+              
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-6 text-gray-500">
                   Loading orders...
@@ -96,7 +97,7 @@ export default function OrdersPage() {
                   key={order.id}
                   className="hover:bg-gray-50 transition duration-150"
                 >
-                  <TableCell className="px-4 py-2 font-medium">#{order.id}</TableCell>
+                  <TableCell className="px-4 py-2 font-medium">{order.id}.</TableCell>
                   <TableCell className="px-4 py-2">User {order.userId}</TableCell>
                   <TableCell className="px-4 py-2">
                     {order.products.reduce((total, item) => total + item.quantity, 0)}
