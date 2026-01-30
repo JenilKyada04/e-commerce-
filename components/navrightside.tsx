@@ -21,7 +21,7 @@ function Navrightside() {
                     />
                 </div>
 
-                <Link href={"/dashboard/checkout"} >
+                <Link href={"/checkout"} >
                     <ShoppingCart />
                 </Link>
                 <NotificationPopover />

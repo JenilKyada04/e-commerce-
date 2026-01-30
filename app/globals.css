@@ -5,6 +5,26 @@
   font-size: 5px;
 }
 
+.inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.inter1 {
+  font-family:  sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.inter2 {
+  font-family:  sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: bold;
+} 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

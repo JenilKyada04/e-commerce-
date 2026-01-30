@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -14,33 +15,44 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
 
-    // if (username === "jenil" && password === "123") {
-    //   localStorage.setItem("isAuth" , " true");
-    //   router.push("/dashboard");
-    // } else {
-    //   alert("Please enter username and password");
+   
+
+    // try {
+    //    await axios.post("/api/auth/login", { username, password, },
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     }
+    //   )
+    //   router.replace("/products")
+    // } catch (error) {
+    //   console.error(error)
+    //   alert("Login Failed or something went wrong")
+    //   setLoading(false)
     // }
 
+
     try {
-
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      })
-
-      if (res.ok) {
-        router.replace("/dashboard");
+      if (username === "jenil" && password === "1234") {
+        await axios.post("/api/auth/login", { username, password, },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      router.replace("/dashboard")
       } else {
-        alert("Login Failed");
+        router.replace("/products")
       }
-    } catch(error){
-      console.error(error);
-      alert("Somthing went wrong")
+    } catch (error) {
+      console.error(error)
+      alert("Login Failed or something went wrong")
       setLoading(false)
     }
 
-};
+  };
 
 
   return (

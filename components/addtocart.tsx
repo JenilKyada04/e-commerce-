@@ -99,7 +99,7 @@ export default function AddToCart({ open, setOpen }: Props) {
             <span>₹{total.toFixed(2)}</span>
           </div>
 
-          <Link href="/dashboard/checkout">
+          <Link href="/checkout">
             <Button className="w-full" disabled={!cart.length}>
               Proceed to Checkout
             </Button>
