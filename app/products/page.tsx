@@ -75,17 +75,18 @@ export default function Page() {
 
   return (
     <>
-      <div className=" flex items-center justify-between  m-3 border-b-2" >
-        <span className="font-semibold text-3xl p-4 ">Products</span>
+    <div className="bg-gray-100" >
+
+      <div className=" flex items-center justify-between  m-3 border-b-4 max-w-360 mx-auto pl-10 md:pl-0 " >
+        <span className="font-semibold text-3xl p-4 md:block hidden ">Products</span>
         <Navrightside />
       </div>
 
-      <div className="mt-5">
+      <div className="mt-5 ">
 
 
-        {/* <span className="font-semibold text-3xl p-10 ">Products</span> */}
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5 p-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5 md:p-4 p-2 max-w-360 mx-auto ">
           {products?.map((item) => (
             <div
               key={item.id}
@@ -128,6 +129,7 @@ export default function Page() {
         </div>
         <Footer />
       </div>
+    </div>
     </>
   )
 }

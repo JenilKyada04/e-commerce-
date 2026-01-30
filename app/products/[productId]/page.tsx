@@ -78,14 +78,12 @@ export default function ProductPage() {
   return (
     <>
 
-     <div className=" flex items-center justify-between  m-3 border-b-2" >
-        <span className="font-semibold text-3xl p-4 ">Product Details :-</span>
+     <div className=" flex items-center justify-between  m-3 border-b-4  max-w-360 mx-auto pl-10 md:pl-0" >
+        <span className="font-semibold text-3xl p-4 md:block hidden ">Product Details :-</span>
         <Navrightside />
       </div>
-      <div className="mt-10 p-4">
+      <div className="md:mt-10 p-4">
 
-
-        {/* <span className="font-semibold text-3xl p-6 mx-auto ">Product Details :- </span> */}
 
         <div className="min-h-screen bg-gray-50 py-12 md:px-4">
           <div className="max-w-6xl mx-auto">
@@ -185,7 +183,7 @@ export default function ProductPage() {
 
 
       </div>
-      <div className="-mt-60">
+      <div className="-mt-40">
 
         <Footer />
       </div>

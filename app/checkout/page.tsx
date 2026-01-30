@@ -43,69 +43,69 @@ export default function CheckoutPage() {
 
   return (
     <>
+      <div className="p-3">
 
-     <div className=" flex items-center justify-between m-3 border-b-2" >
-        <span className="font-semibold text-3xl p-4 ">Checkout :-</span>
-        <Navrightside />
-      </div>
+        <div className=" flex items-center justify-between m-3 border-b-2 max-w-360 mx-auto pl-10 md:pl-0" >
+          <span className="font-semibold text-3xl p-4 md:block hidden ">Checkout :-</span>
+          <Navrightside />
+        </div>
 
-      <div className="max-w-xl mx-auto p-6 space-y-6 border-2 rounded-3xl hover:shadow-xl md:mt-30 cursor-pointer">
+        <div className="max-w-xl mx-auto p-3  space-y-6 border-2 rounded-3xl hover:shadow-xl md:mt-30 cursor-pointer">
 
-        {/* <h1 className="text-2xl font-bold">Checkout</h1> */}
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Qty</TableHead>
-              <TableHead>Total</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {cart.map(item => (
-              <TableRow key={item.id}>
-                <TableCell>{item.title}</TableCell>
-                <TableCell>₹{item.price}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>
-                  ₹{item.price * item.quantity}
-                </TableCell>
+          <Table className="">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Product</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Qty</TableHead>
+                <TableHead>Total</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
 
-        <div className="text-right font-bold text-lg">
-          Grand Total: ₹{totalAmount}
+            <TableBody>
+              {cart.map(item => (
+                <TableRow key={item.id}>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>₹{item.price}</TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>
+                    ₹{item.price * item.quantity}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+
+          <div className="text-right font-bold text-lg">
+            Grand Total: ₹{totalAmount}
+          </div>
+
+          <div className="space-y-3">
+            <Input
+              placeholder="Full Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <Input
+              placeholder="Address"
+              value={address}
+              onChange={e => setAddress(e.target.value)}
+            />
+            <Input
+              placeholder="Phone"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+            />
+          </div>
+
+          <Button className="w-full cursor-pointer" onClick={placeOrder}>
+            Place Order
+          </Button>
         </div>
+        <div className="mt-60">
 
-        <div className="space-y-3">
-          <Input
-            placeholder="Full Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Input
-            placeholder="Address"
-            value={address}
-            onChange={e => setAddress(e.target.value)}
-          />
-          <Input
-            placeholder="Phone"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-          />
+          <Footer />
         </div>
-
-        <Button className="w-full cursor-pointer" onClick={placeOrder}>
-          Place Order
-        </Button>
-      </div>
-      <div className="mt-60">
-
-        <Footer />
       </div>
     </>
   )

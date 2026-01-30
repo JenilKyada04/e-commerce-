@@ -20,7 +20,7 @@ export function AdminPopover() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="flex items-center gap-2 cursor-pointer rounded-md px-2 py-1 hover:bg-muted">
+        <div className="flex items-center gap-2 cursor-pointer rounded-full px-2 py-1 hover:bg-muted bg-white">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted ring-1 ring-border">
             <User className="h-4 w-4" />
           </div>

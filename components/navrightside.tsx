@@ -1,5 +1,5 @@
 
-import {  Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import { useQueryState } from 'nuqs'
 import { NotificationPopover } from './notificationPopover';
 import { AdminPopover } from './adminPopover';

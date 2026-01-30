@@ -63,7 +63,7 @@ export default function OrdersPage() {
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
         <Table className="min-w-full divide-y divide-gray-200">
-          <TableCaption className="text-left text-gray-500 py-2">
+          <TableCaption className="text-center text-gray-500 py-2">
             {loading ? "Loading orders..." : "A list of recent orders"}
           </TableCaption>
 
