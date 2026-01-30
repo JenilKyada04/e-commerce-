@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
 import { useForm } from 'react-hook-form';
+import Link from "next/link"
 import {
   Table,
   TableBody,
@@ -88,17 +89,20 @@ export default function CheckoutPage() {
               placeholder="Full Name"
               value={name}
               onChange={e => setName(e.target.value)}
+              required
             />
             <Input
               placeholder="Address"
               value={address}
               onChange={e => setAddress(e.target.value)}
+              required
             />
             <Input
               placeholder="Phone"
               value={phone}
               onChange={e => setPhone(e.target.value)}
-              
+              required
+
             />
             {/* <Input
               placeholder="Phone number "
@@ -118,9 +122,12 @@ export default function CheckoutPage() {
             /> */}
           </div>
 
+          {/* <Link href="/products/submit" > */}
           <Button className="w-full cursor-pointer" onClick={placeOrder}>
             Place Order
           </Button>
+          {/* </Link> */}
+
         </div>
         <div className="mt-60">
 
