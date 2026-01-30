@@ -76,7 +76,7 @@ export default function Page() {
 
   return (
     <>
-      {/* <Suspense fallback={<Skeleton />}> */}
+      <Suspense fallback={<Skeleton />}>
         <div className="bg-gray-100" >
 
           <div className=" flex items-center justify-between  m-3 border-b-4 max-w-360 mx-auto pl-10 md:pl-0 " >
@@ -132,7 +132,7 @@ export default function Page() {
             <Footer />
           </div>
         </div>
-      {/* </Suspense> */}
+      </Suspense>
     </>
   )
 }
