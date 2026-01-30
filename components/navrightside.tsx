@@ -4,10 +4,15 @@ import { useQueryState } from 'nuqs'
 import { NotificationPopover } from './notificationPopover';
 import { AdminPopover } from './adminPopover';
 import Link from 'next/link';
+import { useState } from "react";
 
 function Navrightside() {
 
     const [name, setName] = useQueryState('search')
+    const [count, setCount] = useState("")
+    const increment = () => {
+        setCount(count + 1);
+    };
     return (
         <div>
             <div className="flex items-center gap-4">
@@ -22,7 +27,7 @@ function Navrightside() {
                 </div>
 
                 <Link href={"/checkout"} >
-                    <ShoppingCart />
+                    <ShoppingCart onClick={increment} />
                 </Link>
                 <NotificationPopover />
                 <AdminPopover />

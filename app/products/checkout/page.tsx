@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
+import { useForm } from 'react-hook-form';
 import {
   Table,
   TableBody,
@@ -17,6 +18,8 @@ import { useState } from "react"
 
 export default function CheckoutPage() {
   const { cart } = useCart()
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const [name, setName] = useState("")
   const [address, setAddress] = useState("")
@@ -95,7 +98,24 @@ export default function CheckoutPage() {
               placeholder="Phone"
               value={phone}
               onChange={e => setPhone(e.target.value)}
+              
             />
+            {/* <Input
+              placeholder="Phone number "
+              type="number"
+              {...register("number", {
+                required: "Age is required",
+                min: {
+                  value: 10,
+                  message: "You must be at least 10 digits"
+                },
+                max: {
+                  value: 11,
+                  message: "You must be at least 10 digits"
+                },
+                valueAsNumber: true,
+              })}
+            /> */}
           </div>
 
           <Button className="w-full cursor-pointer" onClick={placeOrder}>
