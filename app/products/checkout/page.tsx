@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
-import { useForm } from 'react-hook-form';
-import Link from "next/link"
+// import { useForm } from 'react-hook-form';
+// import Link from "next/link"
 import {
   Table,
   TableBody,
@@ -20,7 +20,7 @@ import { useState } from "react"
 export default function CheckoutPage() {
   const { cart } = useCart()
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  // const { register, handleSubmit, formState: { errors } } = useForm();
 
   const [name, setName] = useState("")
   const [address, setAddress] = useState("")
@@ -41,7 +41,14 @@ export default function CheckoutPage() {
 
   if (!cart.length) {
     return (
-      <p className="p-6 text-center font-bold underline ">Your cart is empty</p>
+      <div  >
+         <div className=" flex items-center justify-between m-3 border-b-2 max-w-360 mx-auto pl-10 md:pl-0" >
+          <span className="font-semibold text-3xl p-4 md:block hidden ">Checkout Page : </span>
+          <Navrightside />
+        </div>
+        <p className="p-6 text-center text-4xl font-bold underline mt-40">Your cart is Empty</p>
+        <p className=" text-center">Add to product in your cart because Empty cart very Boring.</p>
+      </div>
     )
   }
 
@@ -50,7 +57,7 @@ export default function CheckoutPage() {
       <div className="p-3">
 
         <div className=" flex items-center justify-between m-3 border-b-2 max-w-360 mx-auto pl-10 md:pl-0" >
-          <span className="font-semibold text-3xl p-4 md:block hidden ">Checkout :-</span>
+          <span className="font-semibold text-3xl p-4 md:block hidden ">Checkout Pag</span>
           <Navrightside />
         </div>
 

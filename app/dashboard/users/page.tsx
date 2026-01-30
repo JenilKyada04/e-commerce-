@@ -30,7 +30,7 @@ type User = {
   phone: string
 }
 
-
+ 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
 
 const fetchUsers = async (): Promise<User[]> => {

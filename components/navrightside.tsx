@@ -26,7 +26,7 @@ function Navrightside() {
                     />
                 </div>
 
-                <Link href={"/checkout"} >
+                <Link href={"/products/checkout"} >
                     <ShoppingCart onClick={increment} />
                 </Link>
                 <NotificationPopover />
