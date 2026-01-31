@@ -6,28 +6,38 @@ type UserListProps = {
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">👥 Recent Users</h2>
+    <div className="rounded-xl bg-white p-4 sm:p-6 shadow">
+      <h2 className="mb-4 text-lg sm:text-xl font-semibold">
+        👥 Recent Users
+      </h2>
 
       <div className="space-y-4">
         {users.map((user) => (
-          <div key={user.id} className="flex items-center gap-3">
+          <div
+            key={user.id}
+            className="flex items-center gap-3 sm:gap-4"
+          >
             <img
-              src={user.image}
+              src={user.image || "/avatar-placeholder.png"}
               alt={user.firstName}
-              className="w-10 h-10 rounded-full"
+              className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
             />
-            <div>
-              <p className="font-medium">
+
+            <div className="min-w-0">
+              <p className="truncate font-medium text-gray-900">
                 {user.firstName} {user.lastName}
               </p>
-              <p className="text-sm text-gray-500">{user.email}</p>
+              <p className="truncate text-sm text-gray-500">
+                {user.email}
+              </p>
             </div>
           </div>
         ))}
 
         {users.length === 0 && (
-          <p className="text-center text-gray-400">No users found</p>
+          <p className="py-8 text-center text-sm text-gray-400">
+            No users found
+          </p>
         )}
       </div>
     </div>

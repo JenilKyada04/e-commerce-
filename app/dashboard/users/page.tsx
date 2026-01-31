@@ -20,7 +20,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import UserDrawer from "@/components/user-drawer"
 import { useQueryState } from "nuqs"
 
-
 type User = {
   id: number
   firstName?: string
@@ -30,7 +29,6 @@ type User = {
   phone: string
 }
 
- 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
 
 const fetchUsers = async (): Promise<User[]> => {
@@ -38,9 +36,7 @@ const fetchUsers = async (): Promise<User[]> => {
   return res.data.users
 }
 
-
 export default function Page() {
-
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
@@ -48,24 +44,25 @@ export default function Page() {
   const [phone, setPhone] = useState("")
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
-    const [search, setSearch] = useQueryState("q", {
-    defaultValue: "",
-  })
+
+  const [search, setSearch] = useQueryState("q", { defaultValue: "" })
 
   const queryClient = useQueryClient()
 
-
-  const { data: users = [], isLoading, isError, error, } = useQuery({
+  const { data: users = [], isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
   })
 
+  // Filter users by email based on search
+  const filteredUsers = users.filter(user =>
+    user.email.toLowerCase().includes((search || "").toLowerCase())
+  )
 
   const addUserMutation = useMutation({
     mutationFn: (newUser: Partial<User>) =>
       axios.post(`${apiUrl}/add`, newUser),
-
-    onSuccess: (res) => {
+    onSuccess: res => {
       queryClient.setQueryData<User[]>(["users"], old =>
         old ? [res.data, ...old] : [res.data]
       )
@@ -73,12 +70,10 @@ export default function Page() {
     },
   })
 
-
   const updateUserMutation = useMutation({
     mutationFn: (user: Partial<User> & { id: number }) =>
       axios.put(`${apiUrl}/${user.id}`, user),
-
-    onSuccess: (res) => {
+    onSuccess: res => {
       queryClient.setQueryData<User[]>(["users"], old =>
         old?.map(u => (u.id === res.data.id ? res.data : u)) ?? []
       )
@@ -86,11 +81,8 @@ export default function Page() {
     },
   })
 
-
   const deleteUserMutation = useMutation({
-    mutationFn: (id: number) =>
-      axios.delete(`${apiUrl}/${id}`),
-
+    mutationFn: (id: number) => axios.delete(`${apiUrl}/${id}`),
     onSuccess: (_, id) => {
       queryClient.setQueryData<User[]>(["users"], old =>
         old?.filter(u => u.id !== id) ?? []
@@ -99,30 +91,14 @@ export default function Page() {
     },
   })
 
-
   const addUser = () => {
     if (!lastName || !username || !email || !phone) return
-
-    addUserMutation.mutate({
-      firstName,
-      lastName,
-      username,
-      email,
-      phone,
-    })
+    addUserMutation.mutate({ firstName, lastName, username, email, phone })
   }
 
   const updateUser = () => {
     if (!editingId) return
-
-    updateUserMutation.mutate({
-      id: editingId,
-      firstName,
-      lastName,
-      username,
-      email,
-      phone,
-    })
+    updateUserMutation.mutate({ id: editingId, firstName, lastName, username, email, phone })
   }
 
   const deleteUser = () => {
@@ -150,7 +126,6 @@ export default function Page() {
     setDrawerOpen(false)
   }
 
-
   const TableSkeleton = ({ rows = 10 }: { rows?: number }) => (
     <>
       {Array.from({ length: rows }).map((_, i) => (
@@ -165,20 +140,21 @@ export default function Page() {
     </>
   )
 
-
   if (isError) {
     return <div className="p-6">Error: {(error as Error).message}</div>
   }
 
-
   return (
-    <div className=" space-y-6 bg-gray-50 rounded-lg shadow-md">
+    <div className="space-y-6 bg-gray-50 rounded-lg shadow-md p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">User Details</h2>
         <div className="flex gap-2">
-             <input type="text" placeholder="search products"
-           value={search || ''} onChange={e => setSearch(e.target.value)}
-            className="hover:bg-gray-200 p-1 rounded-xl pl-6   ring-1  "
+          <input
+            type="text"
+            placeholder="Search by email"
+            value={search || ""}
+            onChange={e => setSearch(e.target.value)}
+            className="hover:bg-gray-200 p-1 rounded-xl pl-6 ring-1"
           />
           <Button
             onClick={() => {
@@ -210,18 +186,15 @@ export default function Page() {
           <TableBody className="bg-white divide-y divide-gray-200">
             {isLoading ? (
               <TableSkeleton />
-            ) : users.length === 0 ? (
+            ) : filteredUsers.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-6 text-gray-500">
                   No users found
                 </TableCell>
               </TableRow>
             ) : (
-              users.map(user => (
-                <TableRow
-                  key={user.id}
-                  className="hover:bg-gray-50 transition duration-150"
-                >
+              filteredUsers.map(user => (
+                <TableRow key={user.id} className="hover:bg-gray-50 transition duration-150">
                   <TableCell className="px-4 py-2">{user.id}.</TableCell>
                   <TableCell className="px-4 py-2">{user.lastName}</TableCell>
                   <TableCell className="px-4 py-2">{user.username}</TableCell>
@@ -229,7 +202,7 @@ export default function Page() {
                   <TableCell className="px-4 py-2">{user.phone}</TableCell>
                   <TableCell className="px-4 py-2 text-right">
                     <button
-                      // onClick={() => editUser(user)}
+                      onClick={() => editUser(user)}
                       className="p-2 rounded-full hover:bg-gray-200 transition"
                     >
                       <BsThreeDots className="text-gray-600" />
@@ -260,6 +233,5 @@ export default function Page() {
         onCancel={resetForm}
       />
     </div>
-
   )
 }

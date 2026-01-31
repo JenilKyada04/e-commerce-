@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
 import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
 
 import {
   Table,
@@ -13,116 +13,162 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+
 type CartProduct = {
   productId: number
   quantity: number
 }
+
+type OrderStatus = "Completed" | "Pending" | "Cancelled"
 
 type Order = {
   id: number
   userId: number
   date: string
   products: CartProduct[]
-  status?: "Completed" | "Pending" | "Cancelled" 
+  status?: OrderStatus
 }
 
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL_CART as string
+
+const fetchOrders = async (): Promise<Order[]> => {
+  const res = await axios.get(API_URL)
+
+  return res.data.carts.map((order: any) => ({
+    ...order,
+    status: order.status ?? "Completed",
+  }))
+}
+
+
+function StatusBadge({ status }: { status?: OrderStatus }) {
+  return (
+    <span
+      className={`inline-flex rounded-md px-2 py-1 text-xs font-medium ${
+        status === "Completed"
+          ? "bg-green-100 text-green-700"
+          : status === "Pending"
+          ? "bg-yellow-100 text-yellow-700"
+          : "bg-red-100 text-red-700"
+      }`}
+    >
+      {status}
+    </span>
+  )
+}
+
+
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL_CART as string
-
-  const fetchOrders = async () => {
-    try {
-      setLoading(true)
-
-      const res = await axios.get(API_URL)
-
-      const ordersWithStatus: Order[] = res.data.carts.map((order: any) => ({
-        ...order,
-        status: order.status ?? "Completed", 
-      }))
-
-      setOrders(ordersWithStatus)
-    } catch (error) {
-      console.error("Error fetching orders", error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchOrders()
-  }, [])
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["orders"],
+    queryFn: fetchOrders,
+  })
 
   return (
-    <div className=" space-y-6 bg-gray-50 rounded-lg shadow-md">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-semibold text-gray-800">Orders</h2>
-      </div>
+    <div className="space-y-6 rounded-lg bg-gray-50 p-4 sm:p-6 shadow-md">
+      <h2 className="text-2xl font-semibold text-gray-800">Orders</h2>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-        <Table className="min-w-full divide-y divide-gray-200">
-          <TableCaption className="text-center text-gray-500 py-2">
-            {loading ? "Loading orders..." : "A list of recent orders"}
+      <div className="hidden sm:block overflow-x-auto rounded-lg border bg-white shadow-sm">
+        <Table>
+          <TableCaption className="py-2 text-gray-500">
+            {isLoading
+              ? "Loading orders..."
+              : isError
+              ? "Failed to load orders"
+              : "A list of recent orders"}
           </TableCaption>
 
           <TableHeader className="bg-gray-100">
             <TableRow>
-              <TableHead className="px-4 py-2 text-left text-gray-600">Order ID</TableHead>
-              <TableHead className="px-4 py-2 text-left text-gray-600">User ID</TableHead>
-              <TableHead className="px-4 py-2 text-left text-gray-600">Items</TableHead>
-              <TableHead className="px-4 py-2 text-left text-gray-600">Date</TableHead>
-              <TableHead className="px-4 py-2 text-right text-gray-600">Status</TableHead>
+              <TableHead>Order ID</TableHead>
+              <TableHead>User ID</TableHead>
+              <TableHead>Items</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead className="text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
 
-          <TableBody className="bg-white divide-y divide-gray-200">
-            {loading ? (
-              
+          <TableBody>
+            {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-6 text-gray-500">
+                <TableCell colSpan={5} className="py-6 text-center">
                   Loading orders...
                 </TableCell>
               </TableRow>
             ) : orders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-6 text-gray-500">
+                <TableCell colSpan={5} className="py-6 text-center">
                   No orders found
                 </TableCell>
               </TableRow>
             ) : (
               orders.map((order) => (
-                <TableRow
-                  key={order.id}
-                  className="hover:bg-gray-50 transition duration-150"
-                >
-                  <TableCell className="px-4 py-2 font-medium">{order.id}.</TableCell>
-                  <TableCell className="px-4 py-2">User {order.userId}</TableCell>
-                  <TableCell className="px-4 py-2">
-                    {order.products.reduce((total, item) => total + item.quantity, 0)}
+                <TableRow key={order.id} className="hover:bg-gray-50">
+                  <TableCell className="font-medium">
+                    #{order.id}
                   </TableCell>
-                  <TableCell className="px-4 py-2">
+                  <TableCell>User {order.userId}</TableCell>
+                  <TableCell>
+                    {order.products.reduce(
+                      (total, item) => total + item.quantity,
+                      0
+                    )}
+                  </TableCell>
+                  <TableCell>
                     {new Date(order.date).toLocaleDateString()}
                   </TableCell>
-                  <TableCell className="px-4 py-2 text-right">
-                    <span
-                      className={`px-2 py-1 rounded-md text-sm ${
-                        order.status === "Completed"
-                          ? "bg-green-100 text-green-700"
-                          : order.status === "Pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {order.status ?? "Unknown"}
-                    </span>
+                  <TableCell className="text-right">
+                    <StatusBadge status={order.status} />
                   </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
+      </div>
+
+      <div className="space-y-3 sm:hidden">
+        {isLoading ? (
+          <p className="text-center text-gray-500">
+            Loading orders...
+          </p>
+        ) : orders.length === 0 ? (
+          <p className="text-center text-gray-500">
+            No orders found
+          </p>
+        ) : (
+          orders.map((order) => (
+            <div
+              key={order.id}
+              className="rounded-lg border bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between">
+                <p className="font-semibold">Order #{order.id}</p>
+                <StatusBadge status={order.status} />
+              </div>
+
+              <div className="mt-2 space-y-1 text-sm text-gray-600">
+                <p>User: {order.userId}</p>
+                <p>
+                  Items:{" "}
+                  {order.products.reduce(
+                    (t, i) => t + i.quantity,
+                    0
+                  )}
+                </p>
+                <p>
+                  Date:{" "}
+                  {new Date(order.date).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )

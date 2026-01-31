@@ -41,6 +41,7 @@ const fetchProducts = async (): Promise<Product[]> => {
 }
 
 
+
 export default function Page() {
 
   const [title, setTitle] = useState("")
@@ -59,6 +60,11 @@ export default function Page() {
     queryKey: ["products"],
     queryFn: fetchProducts,
   })
+  
+const filteredProducts = products.filter(product =>
+  product.title.toLowerCase().includes((search || "").toLowerCase())
+)
+
 
 
   const addProductMutation = useMutation({
@@ -157,7 +163,7 @@ export default function Page() {
 
 
   return (
-    <div className="space-y-6 bg-gray-50 rounded-lg shadow-md">
+    <div className="space-y-6 bg-gray-50 rounded-lg shadow-md p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-semibold text-gray-800">Product Details</h2>
 
@@ -200,14 +206,14 @@ export default function Page() {
                   Loading products...
                 </TableCell>
               </TableRow>
-            ) : products.length === 0 ? (
+            ) : filteredProducts.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="text-center py-6 text-gray-500">
                   No products found
                 </TableCell>
               </TableRow>
             ) : (
-              products.map((item) => (
+              filteredProducts.map((item) => (
                 <TableRow
                   key={item.id}
                   className="hover:bg-gray-50 transition duration-150"
