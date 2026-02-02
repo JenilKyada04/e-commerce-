@@ -10,10 +10,10 @@ function Footercard() {
           <h1 className="inter text-[25px] mt-10">SHOP</h1>
           <p className="text-sm font-thin mt-5 mb-5">We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
           <div className="flex space-x-3 mt-5 " >
-            <Image src="/logo/1.png" width={30} height={30} className="cursor-pointer" alt="" />
-            <Image src="/logo/2.png" width={30} height={30} className="cursor-pointer" alt="" />
-            <Image src="/logo/3.png" width={30} height={30} className="cursor-pointer" alt="" />
-            <Image src="/logo/4.png" width={30} height={30} className="cursor-pointer" alt="" />
+            <Image src="/logo/facebook.png" width={30} height={30} className="cursor-pointer" alt="" />
+            <Image src="/logo/insta.png" width={30} height={30} className="cursor-pointer" alt="" />
+            <Image src="/logo/github.png" width={30} height={30} className="cursor-pointer" alt="" />
+            <Image src="/logo/twiter.png" width={30} height={30} className="cursor-pointer" alt="" />
           </div>
 
         </div>
@@ -28,11 +28,11 @@ function Footercard() {
           <h1 className="font-thin text-sm">Shop.co © 2000-2023, All Rights Reserved</h1>
         </div>
         <div className="flex items-center mt-5 md:m-0 ">
-          <Image src="/payment/p1.png" width={55} height={30} className="cursor-pointer" alt="" />
-          <Image src="/payment/p2.png" width={55} height={30} className="cursor-pointer" alt="" />
-          <Image src="/payment/p3.png" width={55} height={30} className="cursor-pointer" alt="" />
-          <Image src="/payment/p4.png" width={55} height={30} className="cursor-pointer" alt="" />
-          <Image src="/payment/p5.png" width={55} height={30} className="cursor-pointer" alt="" /> 
+          <Image src="/payment/visa.png" width={55} height={30} className="cursor-pointer" alt="" />
+          <Image src="/payment/gpay.png" width={55} height={30} className="cursor-pointer" alt="" />
+          <Image src="/payment/ipay.png" width={55} height={30} className="cursor-pointer" alt="" />
+          <Image src="/payment/paypal.png" width={55} height={30} className="cursor-pointer" alt="" />
+          <Image src="/payment/pay.png" width={55} height={30} className="cursor-pointer" alt="" /> 
           </div>
       </div>
 
