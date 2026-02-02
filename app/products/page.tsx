@@ -8,6 +8,7 @@ import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import { Suspense } from "react"
 import Navrightside from "@/components/navrightside"
+import Myintercepter from '@/lib/intercepter'
 
 type Product = {
   id: number
@@ -19,7 +20,7 @@ type Product = {
 }
 
 // const apiUrl = process.env.NEXT_PUBLIC_API_URL!
-const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
+// const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 
 // const [products, setProducts] = useState<Product[]>([])
@@ -38,7 +39,7 @@ const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const res = await axios.get(apiUrl+"products")
+  const res = await Myintercepter.get("products")
   return res.data.products
 }
 

@@ -1,8 +1,26 @@
+import { request } from "http";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server"
 // import axios from "axios";
 
+
+
+// export async function GET(req: Request){
+
+//   const head = new Headers(req.headers)
+//   const auth = head.get("Authorization")
+//   console.log("Auth : " , auth)
+
+//   return NextResponse.json({message : "Get req is failed"} , {status : 200})
+  
+// }
+
+
+
 export async function POST(req: Request) {
   try {
+
+
     const { username, password } = await req.json();
 
     if (username === "jenil" && password === "1234") {
@@ -23,8 +41,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
   }
 }
-
-
 
 
 // async function login() {
