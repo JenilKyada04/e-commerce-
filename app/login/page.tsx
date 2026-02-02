@@ -69,7 +69,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-muted/40 via-muted to-background px-6">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-muted/40 via-muted to-background px-6">
       <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
 
         <div className="mb-6 text-center">

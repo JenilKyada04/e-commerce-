@@ -37,15 +37,14 @@ export default function ProductPage() {
   const [open, setOpen] = useState(false)
   const [activeImage, setActiveImage] = useState<string>("")
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
-
+  const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 
 
 
   const fetchproducts = async (): Promise<Product[]> => {
-    const res = await axios.get(apiUrl)
-    return res.data.products
+    const res = await axios.get(apiUrl+"products/"+productId)
+    return [res.data]
   }
 
   const { data: products, isLoading, isError, error } = useQuery<Product[]>({

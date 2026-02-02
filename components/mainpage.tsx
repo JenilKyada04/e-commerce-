@@ -11,13 +11,13 @@ export default function HomePage() {
       </h1>
 
       <div className="mt-8 flex gap-4">
-        <Link
+        {/* <Link
         href={"/login"}
           className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
         >
           Go to Dashboard
           <ArrowRight className="h-4 w-4" />
-        </Link>
+        </Link> */}
        
 
         <Link  className="rounded-lg border px-6 py-3 text-sm font-medium hover:bg-muted"

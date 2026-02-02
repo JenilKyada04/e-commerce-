@@ -30,10 +30,10 @@ type Order = {
 }
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL_CART as string
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL as string
 
 const fetchOrders = async (): Promise<Order[]> => {
-  const res = await axios.get(API_URL)
+  const res = await axios.get(API_URL + "carts")
 
   return res.data.carts.map((order: any) => ({
     ...order,

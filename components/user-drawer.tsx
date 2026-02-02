@@ -71,6 +71,8 @@ export default function UserDrawer({
         </DrawerHeader>
 
         <div className="flex-1 space-y-5 px-6 py-6">
+          <form action="">
+
 
             <label className="text-sm font-medium">Name</label>
             <div className="relative">
@@ -83,45 +85,46 @@ export default function UserDrawer({
               />
             </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Username</label>
-            <div className="relative">
-              <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                className="pl-9"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Username</label>
+              <div className="relative">
+                <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  className="pl-9"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Phone</label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                className="pl-9"
-                placeholder="Enter phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Phone</label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  className="pl-9"
+                  placeholder="Enter phone number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                className="pl-9"
-                placeholder="Enter email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  className="pl-9"
+                  placeholder="Enter email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
 
+          </form>
         </div>
 
         <DrawerFooter className="border-t px-6 py-4">

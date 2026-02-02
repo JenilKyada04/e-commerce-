@@ -69,43 +69,47 @@ export default function ProductDrawer({
         </DrawerHeader>
 
         <div className="flex-1 space-y-5 px-6 py-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Product Name</label>
-            <Input
-              placeholder="Enter product title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
+          <form action="">
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Price</label>
-            <Input
-              type="number"
-              placeholder="Enter price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Product Name</label>
+              <Input
+                placeholder="Enter product title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Category</label>
-            <Input
-              placeholder="Enter category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Price</label>
+              <Input
+                type="number"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Stock</label>
-            <Input
-              type="number"
-              placeholder="Enter stock quantity"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-            />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Category</label>
+              <Input
+                placeholder="Enter category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Stock</label>
+              <Input
+                type="number"
+                placeholder="Enter stock quantity"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+              />
+            </div>
+
+          </form>
         </div>
 
         <DrawerFooter className="border-t px-6 py-4">

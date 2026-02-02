@@ -29,10 +29,10 @@ type User = {
   phone: string
 }
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL_USER!
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchUsers = async (): Promise<User[]> => {
-  const res = await axios.get(apiUrl)
+  const res = await axios.get(apiUrl+"users")
   return res.data.users
 }
 

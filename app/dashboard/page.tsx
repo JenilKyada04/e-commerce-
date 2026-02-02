@@ -26,17 +26,21 @@ const DashboardPage: React.FC = () => {
 
   
 
-  const apiurl = process.env.NEXT_PUBLIC_API_URL_USER!
-  const apiproducts = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
-  const apicarts = process.env.NEXT_PUBLIC_API_URL_CART!
+  // const apiurl = process.env.NEXT_PUBLIC_API_URL_USER!
+  // const apiproducts = process.env.NEXT_PUBLIC_API_URL_PRODUCT!
+  // const apicarts = process.env.NEXT_PUBLIC_API_URL_CART!
 
+
+  const apiurl = process.env.NEXT_PUBLIC_BASE_URL!
+
+  
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const [usersRes, productsRes, cartsRes] = await Promise.all([
-          axios.get(apiurl),
-          axios.get(apiproducts),
-          axios.get(apicarts),
+          axios.get(apiurl + "users"),
+          axios.get(apiurl + "products"),
+          axios.get(apiurl + "carts"),
         ]);
 
         setUsers(usersRes.data.users);
@@ -52,6 +56,9 @@ const DashboardPage: React.FC = () => {
     fetchDashboardData();
   }, []);
 
+
+  
+  
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="flex justify-between items-center mb-8">
@@ -93,3 +100,5 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
+
+

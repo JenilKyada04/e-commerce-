@@ -5,7 +5,6 @@ import axios from "axios"
 import { BsThreeDots } from "react-icons/bs"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useQueryState } from "nuqs"
-import { Skeleton } from "@/components/ui/skeleton"
 
 import ProductDrawer from "@/components/product-drawer"
 import {
@@ -33,10 +32,10 @@ type Product = {
 }
 
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL!
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const res = await axios.get(apiUrl)
+  const res = await axios.get(apiUrl+"products")
   return res.data.products
 }
 
