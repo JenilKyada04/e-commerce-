@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import Myintercepter from "@/lib/intercepter"
+import interceptor from "@/lib/intercepter"
 
 import { Button } from "@/components/ui/button"
 
@@ -33,10 +33,9 @@ type Product = {
 }
 
 
-const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const res = await Myintercepter.get(apiUrl+"products")
+  const res = await interceptor.get("products")
   return res.data.products
 }
 
@@ -69,7 +68,7 @@ const filteredProducts = products.filter(product =>
 
   const addProductMutation = useMutation({
     mutationFn: (newProduct: Omit<Product, "id">) =>
-      axios.post(`${apiUrl}/add`, newProduct),
+      interceptor.post(`add`, newProduct),
 
     onSuccess: (res) => {
       queryClient.setQueryData<Product[]>(["products"], old =>
@@ -81,7 +80,7 @@ const filteredProducts = products.filter(product =>
 
   const updateProductMutation = useMutation({
     mutationFn: (p: Product) =>
-      axios.patch(`${apiUrl}/${p.id}`, {
+      interceptor.patch(`${p.id}`, {
         title: p.title,
         price: p.price,
         category: p.category,
@@ -99,7 +98,7 @@ const filteredProducts = products.filter(product =>
 
   const deleteProductMutation = useMutation({
     mutationFn: (id: number) =>
-      axios.delete(`${apiUrl}/${id}`),
+      interceptor.delete(`${id}`),
 
     onSuccess: (_, id) => {
       queryClient.setQueryData<Product[]>(["products"], old =>

@@ -22,14 +22,13 @@ const loginSchema = z.object({
   role: z.enum(["user", "admin"]),
 });
 
-
 type LoginFormData = z.infer<typeof loginSchema>;
 
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const {register, handleSubmit,setValue,formState: { errors }, } = useForm<LoginFormData>({
+  const { register, handleSubmit, setValue, formState: { errors }, } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       role: "user",
@@ -64,7 +63,7 @@ export default function LoginPage() {
         </h2>
 
         <Tabs
-        
+
           defaultValue="user"
           onValueChange={(value) =>
             setValue("role", value as "user" | "admin")
@@ -99,12 +98,7 @@ export default function LoginPage() {
 }
 
 
-function LoginForm({
-  register,
-  errors,
-  loading,
-  onSubmit,
-}: any) {
+function LoginForm({ register, errors, loading, onSubmit }: any) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>

@@ -5,7 +5,9 @@ type UserListProps = {
   users: User[];
 };
 
+
 const UserList: React.FC<UserListProps> = ({ users }) => {
+  console.log(users)
   return (
     <div className="rounded-xl bg-white p-4 sm:p-6 shadow">
       <h2 className="mb-4 text-lg sm:text-xl font-semibold">
@@ -18,14 +20,14 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
             key={user.id}
             className="flex items-center gap-3 sm:gap-4"
           >
-            {/* <Image */}
-            <img
-              src={user.image || "/avatar-placeholder.png"}
+            <Image
+              src={user?.image || "/avatar-placeholder.png"}
               alt={user.firstName}
-              // width={40}
-              // height={40}
+              width={40}
+              height={40}
               className="h-10 w-10 rounded-full object-cover"
             />
+            
 
             <div className="min-w-0">
               <p className="truncate font-medium text-gray-900">

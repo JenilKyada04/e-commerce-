@@ -1,33 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-// import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { fetchUsers , fetchOrders , fetchProducts} from "@/lib/api/dashboardapi";
 
-import { User, Product, Cart } from "../types";
 import StatCard from "@/components/stat-card";
 import ProductTable from "@/components/product-table";
 import UserList from "@/components/user-list";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Myintercepter from "@/lib/intercepter"
+import { useQueries } from "@tanstack/react-query";
 
-const apiurl = process.env.NEXT_PUBLIC_BASE_URL!;
-
-const fetchUsers = async () => {
-  const res = await Myintercepter.get(apiurl + "users");
-  return res.data.users as User[];
-};
-
-const fetchProducts = async () => {
-  const res = await Myintercepter.get(apiurl + "products");
-  return res.data.products as Product[];
-};
-
-const fetchOrders = async () => {
-  const res = await Myintercepter.get(apiurl + "carts");
-  return res.data.carts as Cart[];
-};
 
 const DashboardPage: React.FC = () => {
   const router = useRouter();
@@ -37,20 +19,28 @@ const DashboardPage: React.FC = () => {
     router.replace("/login");
   };
 
-  const { data: users = [], isLoading: usersLoading, isError: usersError } = useQuery({
-    queryKey: ["users"],
-    queryFn: fetchUsers,
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["users"],
+        queryFn: fetchUsers,
+      },
+      {
+        queryKey: ["products"],
+        queryFn: fetchProducts,
+      },
+      {
+        queryKey: ["orders"],
+        queryFn: fetchOrders,
+      },
+    ],
   });
 
-  const { data: products = [], isLoading: productsLoading, isError: productsError } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-  });
-
-  const { data: orders = [], isLoading: ordersLoading, isError: ordersError } = useQuery({
-    queryKey: ["orders"],
-    queryFn: fetchOrders,
-  });
+  const [
+    { data: users = [], isLoading: usersLoading, isError: usersError },
+    { data: products = [], isLoading: productsLoading, isError: productsError },
+    { data: orders = [], isLoading: ordersLoading, isError: ordersError },
+  ] = results;
 
   const loading = usersLoading || productsLoading || ordersLoading;
   const error = usersError || productsError || ordersError;
@@ -58,7 +48,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">📊 Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold"> Admin Dashboard</h1>
 
         <Button
           onClick={handleLogout}

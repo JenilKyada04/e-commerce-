@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import axios from "axios"
 import { BsThreeDots } from "react-icons/bs"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import Myintercepter from "@/lib/intercepter"
+import interceptor from "@/lib/intercepter"
 
 import {
   Table,
@@ -30,10 +29,9 @@ type User = {
   phone: string
 }
 
-const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchUsers = async (): Promise<User[]> => {
-  const res = await Myintercepter.get(apiUrl+"users")
+  const res = await interceptor.get("users")
   return res.data.users
 }
 
@@ -55,15 +53,17 @@ export default function Page() {
     queryFn: fetchUsers,
   })
 
-  // Filter users by email based on search
   const filteredUsers = users.filter(user =>
     user.email.toLowerCase().includes((search || "").toLowerCase())
   )
 
   const addUserMutation = useMutation({
     mutationFn: (newUser: Partial<User>) =>
-      axios.post(`${apiUrl}/add`, newUser),
+      interceptor.post(`add`, newUser),
     onSuccess: res => {
+
+      // queryClient.invalidateQueries(["users"])
+
       queryClient.setQueryData<User[]>(["users"], old =>
         old ? [res.data, ...old] : [res.data]
       )
@@ -73,7 +73,7 @@ export default function Page() {
 
   const updateUserMutation = useMutation({
     mutationFn: (user: Partial<User> & { id: number }) =>
-      axios.put(`${apiUrl}/${user.id}`, user),
+      interceptor.put(`${user.id}`, user),
     onSuccess: res => {
       queryClient.setQueryData<User[]>(["users"], old =>
         old?.map(u => (u.id === res.data.id ? res.data : u)) ?? []
@@ -83,7 +83,7 @@ export default function Page() {
   })
 
   const deleteUserMutation = useMutation({
-    mutationFn: (id: number) => axios.delete(`${apiUrl}/${id}`),
+    mutationFn: (id: number) => interceptor.delete(`${id}`),
     onSuccess: (_, id) => {
       queryClient.setQueryData<User[]>(["users"], old =>
         old?.filter(u => u.id !== id) ?? []

@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import Myintercepter from "@/lib/intercepter"
+import interceptor from "@/lib/intercepter"
 
 
 type CartProduct = {
@@ -34,7 +34,7 @@ type Order = {
 const API_URL = process.env.NEXT_PUBLIC_BASE_URL as string
 
 const fetchOrders = async (): Promise<Order[]> => {
-  const res = await Myintercepter.get(API_URL + "carts")
+  const res = await interceptor.get(API_URL + "carts")
 
   return res.data.carts.map((order: any) => ({
     ...order,

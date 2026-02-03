@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query"
 import Footer from "@/components/footer"
 import { Suspense } from "react"
 import Navrightside from "@/components/navrightside"
-import Myintercepter from '@/lib/intercepter'
+import interceptor from '@/lib/intercepter'
 
 type Product = {
   id: number
@@ -38,7 +38,7 @@ type Product = {
 
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const res = await Myintercepter.get("products")
+  const res = await interceptor.get("products")
   return res.data.products
 }
 
