@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import Myintercepter from "@/lib/intercepter"
 
 import { Button } from "@/components/ui/button"
 
@@ -35,7 +36,7 @@ type Product = {
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const res = await axios.get(apiUrl+"products")
+  const res = await Myintercepter.get(apiUrl+"products")
   return res.data.products
 }
 

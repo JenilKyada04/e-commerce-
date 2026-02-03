@@ -4,6 +4,7 @@ import { useState } from "react"
 import axios from "axios"
 import { BsThreeDots } from "react-icons/bs"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import Myintercepter from "@/lib/intercepter"
 
 import {
   Table,
@@ -32,7 +33,7 @@ type User = {
 const apiUrl = process.env.NEXT_PUBLIC_BASE_URL!
 
 const fetchUsers = async (): Promise<User[]> => {
-  const res = await axios.get(apiUrl+"users")
+  const res = await Myintercepter.get(apiUrl+"users")
   return res.data.users
 }
 

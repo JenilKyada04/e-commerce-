@@ -1,3 +1,5 @@
+
+
 "use client"
 
 import { useCart } from "@/context/cart-context"
@@ -6,7 +8,11 @@ import { Button } from "@/components/ui/button"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
 import { useState } from "react"
+
 import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
 import {
     Table,
     TableBody,
@@ -16,25 +22,33 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
+const checkoutSchema = z.object({
+    name: z.string().min(3, "Name must be at least 3 characters"),
+    address: z.string().min(10, "Address must be at least 10 characters"),
+    phone: z
+        .string()
+        .regex(/^[0-9]{10}$/, "Phone number must be 10 digits"),
+})
+
+type CheckoutFormData = z.infer<typeof checkoutSchema>
+
 export default function CheckoutClient() {
-    const { cart } = useCart()
-
-    const { register } = useForm()
-
     const [name, setName] = useState("")
     const [address, setAddress] = useState("")
     const [phone, setPhone] = useState("")
+    const { cart } = useCart()
+
+    const { register, handleSubmit, formState: { errors }, } = useForm<CheckoutFormData>({
+        resolver: zodResolver(checkoutSchema),
+    })
 
     const totalAmount = cart.reduce(
         (total, item) => total + item.price * item.quantity,
         0
     )
 
-    const placeOrder = () => {
-        if (!name || !address || !phone) {
-            alert("Please fill all details")
-            return
-        }
+    const placeOrder = (data: CheckoutFormData) => {
+        console.log("Order Data:", data)
         alert("Order placed successfully 🎉")
     }
 
@@ -64,79 +78,76 @@ export default function CheckoutClient() {
                 <Navrightside />
             </div>
 
-            <div className="max-w-xl mx-auto p-3  space-y-6 border-2 rounded-3xl hover:shadow-xl md:mt-30 cursor-pointer">
-                <form action="">
+            <div className="max-w-xl mx-auto p-5 space-y-6 border-2 rounded-3xl hover:shadow-xl cursor-pointer">
 
-                    <Table className="">
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Product</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Qty</TableHead>
-                                <TableHead>Total</TableHead>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Product</TableHead>
+                            <TableHead>Price</TableHead>
+                            <TableHead>Qty</TableHead>
+                            <TableHead>Total</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {cart.map(item => (
+                            <TableRow key={item.id}>
+                                <TableCell>{item.title}</TableCell>
+                                <TableCell>₹{item.price}</TableCell>
+                                <TableCell>{item.quantity}</TableCell>
+                                <TableCell>
+                                    ₹{item.price * item.quantity}
+                                </TableCell>
                             </TableRow>
-                        </TableHeader>
+                        ))}
+                    </TableBody>
+                </Table>
 
-                        <TableBody>
-                            {cart.map(item => (
-                                <TableRow key={item.id}>
-                                    <TableCell>{item.title}</TableCell>
-                                    <TableCell>₹{item.price}</TableCell>
-                                    <TableCell>{item.quantity}</TableCell>
-                                    <TableCell>
-                                        ₹{item.price * item.quantity}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                <div className="text-right font-bold text-lg">
+                    Grand Total: ₹{totalAmount}
+                </div>
 
-                    <div className="text-right font-bold text-lg">
-                        Grand Total: ₹{totalAmount}
-                    </div>
-
-                    <div className="space-y-3">
+                <form onSubmit={handleSubmit(placeOrder)} className="space-y-4">
+                    <div>
                         <Input
-                            placeholder="Full Name"
+                            placeholder="Full name" {...register("name")}
                             value={name}
-                            onChange={e => setName(e.target.value)}
-                            required
-                        />
-                        <Input
-                            placeholder="Address"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            required
-                        />
-                        {/* <Input
-                        placeholder="Phone"
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
-                        required
-
-                    /> */}
-                        <Input
-                            placeholder="Phone number "
-                            type="number"
-                            {...register("number", {
-                                required: "Age is required",
-                                min: {
-                                    value: 10,
-                                    message: "You must be at least 10 digits"
-                                },
-                                max: {
-                                    value: 11,
-                                    message: "You must be at least 10 digits"
-                                },
-                                valueAsNumber: true,
-                            })}
-                        />
+                            onChange={e => setName(e.target.value)} />
+                        {errors.name && (
+                            <p className="text-red-500 text-sm">
+                                {errors.name.message}
+                            </p>
+                        )}
                     </div>
-                    {/* <Link href="/products/submit" > */}
-                    <Button className="w-full cursor-pointer" onClick={placeOrder}>
+
+                    <div>
+                        <Input
+                            placeholder="Address" {...register("address")}
+                            value={address}
+                            onChange={e => setAddress(e.target.value)} />
+                        {errors.address && (
+                            <p className="text-red-500 text-sm">
+                                {errors.address.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <div>
+                        <Input
+                            placeholder="Phone Number"{...register("phone")}
+                            value={phone}
+                            onChange={e => setPhone(e.target.value)} />
+                        {errors.phone && (
+                            <p className="text-red-500 text-sm">
+                                {errors.phone.message}
+                            </p>
+                        )}
+                    </div>
+
+                    <Button type="submit" className="w-full">
                         Place Order
                     </Button>
-                    {/* </Link> */}
                 </form>
             </div>
 
@@ -144,3 +155,4 @@ export default function CheckoutClient() {
         </div>
     )
 }
+

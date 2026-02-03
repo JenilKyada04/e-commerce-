@@ -5,7 +5,6 @@ import axios from "axios"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useQuery } from "@tanstack/react-query"
 import Footer from "@/components/footer"
-import Navbar from "@/components/navbar"
 import { Suspense } from "react"
 import Navrightside from "@/components/navrightside"
 import Myintercepter from '@/lib/intercepter'
@@ -49,9 +48,6 @@ export default function Page() {
     queryKey: ["products"],
     queryFn: fetchProducts,
   })
-
-
-
 
   if (isLoading) {
     return (

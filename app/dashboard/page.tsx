@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import axios from "axios";
+// import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 import { User, Product, Cart } from "../types";
@@ -10,21 +10,22 @@ import ProductTable from "@/components/product-table";
 import UserList from "@/components/user-list";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Myintercepter from "@/lib/intercepter"
 
 const apiurl = process.env.NEXT_PUBLIC_BASE_URL!;
 
 const fetchUsers = async () => {
-  const res = await axios.get(apiurl + "users");
+  const res = await Myintercepter.get(apiurl + "users");
   return res.data.users as User[];
 };
 
 const fetchProducts = async () => {
-  const res = await axios.get(apiurl + "products");
+  const res = await Myintercepter.get(apiurl + "products");
   return res.data.products as Product[];
 };
 
 const fetchOrders = async () => {
-  const res = await axios.get(apiurl + "carts");
+  const res = await Myintercepter.get(apiurl + "carts");
   return res.data.carts as Cart[];
 };
 

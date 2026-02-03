@@ -9,6 +9,7 @@ import { useCart } from "@/context/cart-context"
 import { useQuery } from "@tanstack/react-query"
 import Footer from "@/components/footer"
 import Navrightside from "@/components/navrightside"
+import Myintercepter from "@/lib/intercepter"
 
 type Product = {
   id: number
@@ -43,7 +44,7 @@ export default function ProductPage() {
 
 
   const fetchproducts = async (): Promise<Product[]> => {
-    const res = await axios.get(apiUrl+"products/"+productId)
+    const res = await Myintercepter.get(apiUrl+"products/"+productId)
     return [res.data]
   }
 
