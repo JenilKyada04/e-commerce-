@@ -5,6 +5,8 @@ import { NotificationPopover } from './notificationPopover';
 import { AdminPopover } from './adminPopover';
 import Link from 'next/link';
 
+
+
 function Navrightside() {
 
     const [name, setName] = useQueryState('search')

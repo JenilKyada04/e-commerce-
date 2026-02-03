@@ -29,12 +29,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<LoginFormData>({
+  const {register, handleSubmit,setValue,formState: { errors }, } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       role: "user",
@@ -64,7 +59,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow">
 
-        <h2 className="mb-4 text-center text-2xl font-bold">
+        <h2 className="mb-4 text-center text-2xl font-bold underline">
           Login
         </h2>
 
@@ -76,8 +71,8 @@ export default function LoginPage() {
           }
         >
           <TabsList className="mb-4 grid grid-cols-2">
-            <TabsTrigger value="user">User</TabsTrigger>
-            <TabsTrigger value="admin">Admin</TabsTrigger>
+            <TabsTrigger value="user" className="cursor-pointer">User</TabsTrigger>
+            <TabsTrigger value="admin" className="cursor-pointer" >Admin</TabsTrigger>
           </TabsList>
 
           <TabsContent value="user">

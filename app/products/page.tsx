@@ -84,8 +84,6 @@ export default function Page() {
 
           <div className="mt-5 ">
 
-
-
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-5 md:p-4 p-2 max-w-360 mx-auto ">
               {products?.map((item) => (
                 <div

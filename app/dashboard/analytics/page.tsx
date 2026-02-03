@@ -41,7 +41,6 @@ const fetchProducts = async (): Promise<Product[]> => {
 }
 
 
-
 export default function Page() {
 
   const [title, setTitle] = useState("")
@@ -50,6 +49,7 @@ export default function Page() {
   const [stock, setStock] = useState("")
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+
   const [search, setSearch] = useQueryState("q", {
     defaultValue: "",
   })
@@ -61,10 +61,10 @@ export default function Page() {
     queryFn: fetchProducts,
   })
   
+
 const filteredProducts = products.filter(product =>
   product.title.toLowerCase().includes((search || "").toLowerCase())
 )
-
 
 
   const addProductMutation = useMutation({
@@ -78,7 +78,6 @@ const filteredProducts = products.filter(product =>
       resetForm()
     },
   })
-
 
   const updateProductMutation = useMutation({
     mutationFn: (p: Product) =>
@@ -96,7 +95,6 @@ const filteredProducts = products.filter(product =>
       resetForm()
     },
   })
-
 
 
   const deleteProductMutation = useMutation({
@@ -168,10 +166,12 @@ const filteredProducts = products.filter(product =>
         <h2 className="text-2xl font-semibold text-gray-800">Product Details</h2>
 
         <div className="flex gap-3">
+
           <input type="text" placeholder="search products"
             value={search || ''} onChange={e => setSearch(e.target.value)}
             className="hover:bg-gray-200 p-1 rounded-xl pl-6   ring-1  "
           />
+
           <Button
             onClick={() => {
               resetForm()
