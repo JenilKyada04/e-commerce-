@@ -1,4 +1,4 @@
-import Footersmcard from "./footersmcard";
+import Footersmcard from "./footer-SmCard";
 import Image from "next/image";
 
 function Footercard() {

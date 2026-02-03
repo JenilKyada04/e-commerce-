@@ -37,17 +37,17 @@ const DashboardPage: React.FC = () => {
     router.replace("/login");
   };
 
-  const { data: users = [],isLoading: usersLoading,isError: usersError } = useQuery({
+  const { data: users = [], isLoading: usersLoading, isError: usersError } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
   });
 
-  const {data: products = [],isLoading: productsLoading,isError: productsError} = useQuery({
+  const { data: products = [], isLoading: productsLoading, isError: productsError } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });
 
-  const {data: orders = [],isLoading: ordersLoading, isError: ordersError} = useQuery({
+  const { data: orders = [], isLoading: ordersLoading, isError: ordersError } = useQuery({
     queryKey: ["orders"],
     queryFn: fetchOrders,
   });

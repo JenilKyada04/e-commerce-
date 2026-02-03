@@ -1,5 +1,5 @@
 import { TfiEmail } from "react-icons/tfi";
-import Footercard from "./footercard";
+import Footercard from "./footer-Card";
 
 function Footer() {
   return (

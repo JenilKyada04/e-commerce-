@@ -2,11 +2,6 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import Navrightside from "./navrightside";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 export default function Navbar() {
 
@@ -16,14 +11,6 @@ export default function Navbar() {
             <div className="flex items-center gap-2 cursor-pointer">
                 <SidebarTrigger className="cursor-pointer" />
             </div>
-
-            {/* <Tooltip>
-                <TooltipTrigger><SidebarTrigger className="cursor-pointer" /></TooltipTrigger>
-                <TooltipContent>
-                    <p>Add to library</p>
-                </TooltipContent>
-            </Tooltip> */}
-
             <Navrightside /> 
 
         </div>
