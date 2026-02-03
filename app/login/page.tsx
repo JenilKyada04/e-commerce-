@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import {
   Tabs,
@@ -11,179 +14,138 @@ import {
   TabsContent,
 } from "@/components/ui/tabs";
 
+
+
+const loginSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(4, "Password must be at least 4 characters"),
+  role: z.enum(["user", "admin"]),
+});
+
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
+
 export default function LoginPage() {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState<"user" | "admin">("user");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      role: "user",
+    },
+  });
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [adminUsername, setAdminUsername] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
-  const handleUserLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      await axios.post(
-        "/api/auth/login",
-        { username, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      router.replace("/products");
-    } catch (error) {
-      console.error(error);
-      alert("User login failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAdminLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      if (adminUsername === "jenil" && adminPassword === "1234") {
-        await axios.post(
-          "/api/auth/login",
-          { username: adminUsername, password: adminPassword },
-          { headers: { "Content-Type": "application/json" } }
-        );
-
+  const loginMutation = useMutation({
+    mutationFn: (payload: LoginFormData) =>
+      axios.post("/api/auth/login", payload),
+    onSuccess: (res) => {
+      if (res.data.role === "admin") {
         router.replace("/dashboard");
       } else {
-        alert("Invalid admin credentials");
+        router.replace("/products");
       }
-    } catch (error) {
-      console.error(error);
-      alert("Admin login failed");
-    } finally {
-      setLoading(false);
-    }
+    },
+    onError: () => {
+      alert("Invalid credentials");
+    },
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    loginMutation.mutate(data);
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-muted/40 via-muted to-background px-6">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl ring-1 ring-black/5">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow">
 
-        <div className="mb-6 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">
-            {activeTab === "user" ? "Welcome" : "Welcome Back"}
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {activeTab === "user"
-              ? "Login to continue shopping"
-              : "Admin access only"}
-          </p>
-        </div>
+        <h2 className="mb-4 text-center text-2xl font-bold">
+          Login
+        </h2>
 
         <Tabs
-          value={activeTab}
+        
+          defaultValue="user"
           onValueChange={(value) =>
-            setActiveTab(value as "user" | "admin")
+            setValue("role", value as "user" | "admin")
           }
-          className="w-full"
         >
-          <TabsList className="mb-6 grid w-full grid-cols-2">
-            <TabsTrigger value="user" className="cursor-pointer">
-              User Login
-            </TabsTrigger>
-            <TabsTrigger value="admin" className="cursor-pointer">
-              Admin Login
-            </TabsTrigger>
+          <TabsList className="mb-4 grid grid-cols-2">
+            <TabsTrigger value="user">User</TabsTrigger>
+            <TabsTrigger value="admin">Admin</TabsTrigger>
           </TabsList>
 
           <TabsContent value="user">
-            <form onSubmit={handleUserLogin} className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
-              >
-                {loading ? "Logging in..." : "Login as User"}
-              </button>
-            </form>
+            <LoginForm
+              register={register}
+              errors={errors}
+              loading={loginMutation.isPending}
+              onSubmit={handleSubmit(onSubmit)}
+            />
           </TabsContent>
 
           <TabsContent value="admin">
-            <form onSubmit={handleAdminLogin} className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Admin Username
-                </label>
-                <input
-                  type="text"
-                  value={adminUsername}
-                  onChange={(e) =>
-                    setAdminUsername(e.target.value)
-                  }
-                  className="w-full rounded-lg border px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Admin Password
-                </label>
-                <input
-                  type="password"
-                  value={adminPassword}
-                  onChange={(e) =>
-                    setAdminPassword(e.target.value)
-                  }
-                  className="w-full rounded-lg border px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-destructive px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
-              >
-                {loading ? "Logging in..." : "Login as Admin"}
-              </button>
-            </form>
+            <LoginForm
+              register={register}
+              errors={errors}
+              loading={loginMutation.isPending}
+              onSubmit={handleSubmit(onSubmit)}
+            />
           </TabsContent>
         </Tabs>
-
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Secure Login
-        </p>
       </div>
     </div>
+  );
+}
+
+
+function LoginForm({
+  register,
+  errors,
+  loading,
+  onSubmit,
+}: any) {
+  return (
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div>
+        <input
+          type="text"
+          placeholder="Username"
+          {...register("username")}
+          className="w-full rounded border px-3 py-2"
+        />
+        {errors.username && (
+          <p className="text-sm text-red-500">
+            {errors.username.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <input
+          type="password"
+          placeholder="Password"
+          {...register("password")}
+          className="w-full rounded border px-3 py-2"
+        />
+        {errors.password && (
+          <p className="text-sm text-red-500">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
+
+      <button
+        disabled={loading}
+        className="w-full rounded bg-black py-2 text-white disabled:opacity-60"
+      >
+        {loading ? "Logging in..." : "Login"}
+      </button>
+    </form>
   );
 }

@@ -1,73 +1,42 @@
-import { request } from "http";
-import { headers } from "next/headers";
-import { NextResponse } from "next/server"
-// import axios from "axios";
+import { NextResponse } from "next/server";
 
+const users = [
+  { username: "user1", password: "1234", role: "user" },
+  { username: "user2", password: "2222", role: "user" },
+];
 
-
-// export async function GET(req: Request){
-
-//   const head = new Headers(req.headers)
-//   const auth = head.get("Authorization")
-//   console.log("Auth : " , auth)
-
-//   return NextResponse.json({message : "Get req is failed"} , {status : 200})
-  
-// }
-
-
+const admin = {
+  username: "jenil",
+  password: "1234",
+  role: "admin",
+};
 
 export async function POST(req: Request) {
-  try {
+  const { username, password, role } = await req.json();
 
-
-    const { username, password } = await req.json();
-
-    if (username === "jenil" && password === "1234") {
-      const response = NextResponse.json({ success: true });
-
-      response.cookies.set("token", "dummy-token-12345", {
-        httpOnly: true,
-        path: "/",
-        maxAge: 60 * 30,
-      }); 
-
-      return response;
+  if (role === "admin") {
+    if (
+      username === admin.username &&
+      password === admin.password
+    ) {
+      return NextResponse.json({ role: "admin" });
     }
-
-    return NextResponse.json({ success: false, message: "Invalid credentials" }, { status: 401 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Invalid admin credentials" },
+      { status: 401 }
+    );
   }
+
+  const user = users.find(
+    (u) => u.username === username && u.password === password
+  );
+
+  if (!user) {
+    return NextResponse.json(
+      { message: "Invalid user credentials" },
+      { status: 401 }
+    );
+  }
+
+  return NextResponse.json({ role: "user" });
 }
-
-
-// async function login() {
-//   try {
-//     const response = await axios.post(
-//       "https://dummyjson.com/auth/login",
-//       {
-//         username: "emilys",
-//         password: "emilyspass",
-//         expiresInMins: 30, 
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         withCredentials: true, 
-//       }
-//     );
-
-//     console.log("Login Success:", response.data);
-//   } catch (error: any) {
-//     console.error(
-//       "Login failed:",
-//       error.response?.data || error.message
-//     );
-//   }
-// }
-
-// login();
-
