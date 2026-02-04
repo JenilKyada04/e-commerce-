@@ -79,8 +79,11 @@ export default function ProductPage() {
     <>
 
      <div className=" flex items-center justify-between  m-3 border-b-4  max-w-360 mx-auto pl-10 md:pl-0" >
-        <span className="font-semibold text-3xl p-4 md:block hidden ">Product Details :-</span>
+        <span className="font-semibold text-3xl p-4 ">Product Details :</span>
+        <span className="md:block hidden ">
+
         <Navrightside />
+        </span>
       </div>
       <div className="md:mt-10 p-4">
 
@@ -183,8 +186,7 @@ export default function ProductPage() {
 
 
       </div>
-      <div className="-mt-40">
-
+      <div className="md:-mt-40">
         <Footer />
       </div>
     </>

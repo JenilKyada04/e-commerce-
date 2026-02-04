@@ -72,10 +72,13 @@ export default function CheckoutClient() {
     return (
         <div className="p-3">
             <div className="flex items-center justify-between m-3 border-b-2">
-                <span className="font-semibold text-3xl p-4 hidden md:block">
+                <span className="font-semibold text-3xl p-4 ">
                     Checkout Page
                 </span>
-                <Navrightside />
+                <span className="hidden md:block">
+
+                    <Navrightside />
+                </span>
             </div>
 
             <div className="max-w-xl mx-auto p-5 space-y-6 border-2 rounded-3xl hover:shadow-xl cursor-pointer">
@@ -150,8 +153,10 @@ export default function CheckoutClient() {
                     </Button>
                 </form>
             </div>
+            <div className="md:mt-0 mt-40 ">
 
-            <Footer />
+                <Footer />
+            </div>
         </div>
     )
 }

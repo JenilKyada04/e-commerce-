@@ -78,8 +78,10 @@ export default function Page() {
         <div className="bg-gray-100" >
 
           <div className=" flex items-center justify-between  m-3 border-b-4 max-w-360 mx-auto pl-10 md:pl-0 " >
-            <span className="font-semibold text-3xl p-4 md:block hidden ">Products</span>
-            <Navrightside />
+            <span className="font-semibold text-3xl p-4">Products : </span>
+            <span className="md:block hidden">
+              <Navrightside />
+            </span>
           </div>
 
           <div className="mt-5 ">

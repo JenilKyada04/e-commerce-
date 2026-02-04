@@ -29,7 +29,6 @@ type User = {
   phone: string
 }
 
-
 const fetchUsers = async (): Promise<User[]> => {
   const res = await interceptor.get("users")
   return res.data.users
@@ -41,6 +40,7 @@ export default function Page() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+  
   const [editingId, setEditingId] = useState<number | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
